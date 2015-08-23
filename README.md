@@ -2,7 +2,7 @@
 
 Installs Compass on RHEL/CentOS and Debian/Ubuntu servers.
 
-Inspired from several role packages created by Jeff Geerling and the unavailability of similar packages.
+Inspired from several role packages created by [Jeff Geerling](https://github.com/geerlingguy/) and the unavailability of similar packages.
 
 ## Requirements
 
@@ -28,6 +28,10 @@ Available variables are listed below, along with default values (see `defaults/m
 ## Example Playbook
 
   - { role: compass, when: '"compass" in installed_extras' }
+
+## Installation
+
+  Add "compass" to the installed_extras variable in your config.yml file to use this role with the playbook example above.
 
 ## License
 
