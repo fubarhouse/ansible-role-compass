@@ -13,11 +13,7 @@ Available variables are listed below, along with default values (see `defaults/m
   compass_gems:<br />
     - bundler<br />
     - sass<br />
-    - susy<br />
     - compass<br />
-    - compass-aurora<br />
-    - chunky_png<br />
-    - fssm
 
 ## Dependencies
 
