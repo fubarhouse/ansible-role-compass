@@ -25,8 +25,8 @@ Available variables are listed below, along with default values (see `defaults/m
 
 ## Installation
 
-  Add "compass" to the installed_extras variable in your config.yml file to use this role with the playbook example above.
-  Override compass_gems variable in your config.yml to install a list of gems instead of the default value of that array.
+  * Add "compass" to the installed_extras variable in your config.yml file to use this role with the playbook example above.
+  * Override compass_gems variable in your config.yml as required.
 
 ## License
 
