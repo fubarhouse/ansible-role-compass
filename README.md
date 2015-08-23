@@ -12,13 +12,13 @@ Requires `aptitude` to be installed on the server.
 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
-  compass_gems:__
-    - bundler__
-    - sass__
-    - susy__
-    - compass__
-    - compass-aurora__
-    - chunky_png__
+  compass_gems:<br />
+    - bundler<br />
+    - sass<br />
+    - susy<br />
+    - compass<br />
+    - compass-aurora<br />
+    - chunky_png<br />
     - fssm
 
 ## Dependencies
