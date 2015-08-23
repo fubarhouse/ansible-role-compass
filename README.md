@@ -25,7 +25,7 @@ Available variables are listed below, along with default values (see `defaults/m
 
 ## Example Playbook
 
-  - { role: compass, when: '"compass" in installed_extras' }
+  - { role: fubarhouse.compass, when: '"compass" in installed_extras' }
 
 ## Installation
 
