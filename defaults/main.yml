@@ -1,0 +1,10 @@
+---
+# compass gems to install
+compass_gems:
+    - bundler
+    - sass
+    - susy
+    - compass
+    - compass-aurora
+    - chunky_png
+    - fssm
