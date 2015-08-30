@@ -1,0 +1,20 @@
+---
+dependencies: []
+
+galaxy_info:
+  author: fubarhouse
+  description: Provisions ruby core and optional gems
+  company: "Shared Services Center"
+  license: "license (BSD, MIT)"
+  min_ansible_version: 1.7.4
+  platforms:
+  - name: Ubuntu
+    versions:
+    - all
+  - name: Debian
+    versions:
+    - all
+  categories:
+    - system
+    - database
+    - development
