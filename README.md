@@ -10,10 +10,12 @@ Requires `aptitude` to be installed on the server.
 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
-  ruby_gems:<br />
-    - bundler<br />
-    - sass<br />
-    - compass<br />
+```
+  ruby_gems:
+    - bundler
+    - sass
+    - compass
+```
 
 ## Dependencies
 
@@ -21,12 +23,14 @@ Available variables are listed below, along with default values (see `defaults/m
 
 ## Example Playbook
 
+```
   - { role: fubarhouse.ruby, when: '"ruby" in installed_extras' }
+```
 
 ## Installation
 
-  Add "ruby" to the installed_extras variable in your config.yml file to use this role with the playbook example above.
-  Override ruby_gems variable in your config.yml to install a list of gems instead of the default value of that array.
+  * Add "ruby" to the installed_extras variable in your config.yml file to use this role with the playbook example above.
+  * Override ruby_gems variable in your config.yml to install a list of gems instead of the default value of that array.
 
 ## License
 
@@ -35,4 +39,5 @@ MIT / BSD
 ## Author Information
 
 This role was created in 2015 by [Karl Hepworth](https://twitter.com/fubarhouse).
+
 Inspired from several role packages created by [Jeff Geerling](https://github.com/geerlingguy/).
