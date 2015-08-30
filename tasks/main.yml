@@ -1,12 +1,19 @@
 ---
 # file: roles/compass/tasks/main.yml
 
-- name: "Compass | Install Packages"
-  apt: pkg={{item}} state=installed
+- name: "fubarhouse.ruby | Ensure core is installed"
+  apt: pkg={{ item }} state=present
   with_items:
     - ruby-full
     - rubygems
 
-- name: "Compass | Install Gems"
-  shell: gem install {{item}}
-  with_items: "{{compass_gems}}"
+- name: "fubarhouse.ruby | Detect gems"
+  shell: gem list
+  register: installed_gems
+  ignore_errors: True
+  no_log: True
+
+- name: "fubarhouse.ruby | Install gems"
+  shell: sudo gem install {{ item.name }}
+  with_items: "{{ compass_gems }}"
+  when: "item.name not in installed_gems.stdout"
