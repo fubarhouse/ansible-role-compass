@@ -1,4 +1,7 @@
 ---
+# ruby version
+ruby_version: "1.9.3"
+
 # compass gems to install
 compass_gems:
   - { name: bundler }

@@ -1,6 +1,6 @@
 # Ansible Role: Ruby
 
-Installs Ruby on RHEL/CentOS and Debian/Ubuntu servers.
+Installs RVM, Ruby and Gems on RHEL/CentOS and Debian/Ubuntu servers.
 
 ## Requirements
 
@@ -9,6 +9,10 @@ Requires `aptitude` to be installed on the server.
 ## Role Variables
 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
+
+```
+ruby_version: "1.9.3"
+```
 
 ```
   ruby_gems:
