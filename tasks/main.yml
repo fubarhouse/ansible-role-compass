@@ -1,23 +1,5 @@
 ---
 # file: roles/compass/tasks/main.yml
 
-- name: "fubarhouse.ruby | Install RVM"
-  apt: name={{ item }} state=present
-  with_items:
-    - ruby-rvm
-
-- name: "fubarhouse.ruby | Install Ruby"
-  apt: name={{ item }} state=present
-  with_items:
-    - ruby{{ ruby_version }}
-
-- name: "fubarhouse.ruby | Detect gems"
-  shell: gem list
-  register: installed_gems
-  ignore_errors: True
-  no_log: True
-
-- name: "fubarhouse.ruby | Install gems"
-  shell: sudo gem install {{ item.name }}
-  with_items: "{{ compass_gems }}"
-  when: "item.name not in installed_gems.stdout"
+- include: rvm.yml
+- include: gems.yml

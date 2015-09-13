@@ -1,6 +1,12 @@
 ---
+# cagrant user
+vagrant_user: "vagrant"
+
 # ruby version
 ruby_version: "1.9.3"
+
+# rvm install localtion
+rvm_location: "/home/vagrant/.rvm/bin/rvm"
 
 # compass gems to install
 compass_gems:
