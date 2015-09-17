@@ -1,0 +1,22 @@
+---
+# file: roles/fubarhouse.ruby/tasks/ruby.yml
+
+- name: "Ruby | Check version"
+  sudo: yes
+  sudo_user: "{{ vagrant_user }}"
+  shell: "{{ rvm_location }} ls"
+  register: ruby_version_current
+  ignore_errors: yes
+  no_log: yes
+
+- name: "Ruby | Install"
+  sudo: yes
+  sudo_user: "{{ vagrant_user }}"
+  shell: "{{ rvm_location }} install ruby-{{ ruby_version }}"
+  when: "'{{ ruby_version }}' not in '{{ ruby_version_current.stdout }}'"
+
+- name: "Ruby | Configuring"
+  sudo: yes
+  sudo_user: "{{ vagrant_user }}"
+  shell: "{{ rvm_location }} alias create default {{ ruby_version }}"
+  when: "'{{ ruby_version }}' not in '{{ ruby_version_current.stdout }}'"

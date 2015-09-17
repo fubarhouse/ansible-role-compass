@@ -1,5 +1,5 @@
 ---
-# file: roles/compass/tasks/gems.yml
+# file: roles/fubarhouse.ruby/tasks/gems.yml
 
 - name: "Gems | Detect"
   sudo: yes
@@ -13,3 +13,8 @@
   shell: "sudo {{ rvm_location }} @global do gem install {{ item.name }}"
   with_items: "{{ compass_gems }}"
   when: item.name not in installed_gems.stdout
+
+- name: "Gems | Update"
+  shell: "sudo {{ rvm_location }} @global do gem update {{ item.name }}"
+  with_items: "{{ compass_gems }}"
+  when: item.name in installed_gems.stdout

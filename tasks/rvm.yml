@@ -1,7 +1,7 @@
 ---
-# file: roles/compass/tasks/nvm.yml
+# file: roles/fubarhouse.ruby/tasks/nvm.yml
 
-- name: "RVM | Check"
+- name: "RVM | Check for install"
   sudo: yes
   sudo_user: "{{ vagrant_user }}"
   stat: path={{ rvm_location }}
@@ -19,6 +19,12 @@
   sudo: yes
   sudo_user: "{{ vagrant_user }}"
   shell: \curl https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer | bash -s stable --ruby={{ ruby_version }}
+  when: "{{ rvm_installed.stat.exists }} == false"
+
+- name: "Ruby | Aliasing"
+  sudo: yes
+  sudo_user: "{{ vagrant_user }}"
+  shell: "{{ rvm_location }} alias create default {{ ruby_version }}"
   when: "{{ rvm_installed.stat.exists }} == false"
 
 - name: "RVM | Configure"

@@ -1,5 +1,8 @@
 ---
-# file: roles/compass/tasks/main.yml
+# file: roles/fubarhouse.ruby/tasks/main.yml
 
 - include: rvm.yml
+
+- include: ruby.yml
+
 - include: gems.yml

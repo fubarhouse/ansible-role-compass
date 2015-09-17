@@ -1,9 +1,9 @@
 ---
-# cagrant user
+# vagrant user
 vagrant_user: "vagrant"
 
 # ruby version
-ruby_version: "1.9.3"
+ruby_version: "2.2.1"
 
 # rvm install localtion
 rvm_location: "/home/vagrant/.rvm/bin/rvm"

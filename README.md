@@ -43,5 +43,3 @@ MIT / BSD
 ## Author Information
 
 This role was created in 2015 by [Karl Hepworth](https://twitter.com/fubarhouse).
-
-Inspired from several role packages created by [Jeff Geerling](https://github.com/geerlingguy/).
