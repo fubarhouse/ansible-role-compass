@@ -1,20 +1,8 @@
 ---
 # file: roles/fubarhouse.ruby/tasks/gems.yml
 
-- name: "Gems | Detect"
+- name: "Gems | Ensure installed and updated"
   sudo: yes
-  sudo_user: "{{ vagrant_user }}"
-  shell: "sudo {{ rvm_location }} @global do gem list"
-  register: installed_gems
-  ignore_errors: yes
-  no_log: yes
-
-- name: "Gems | Install"
-  shell: "sudo {{ rvm_location }} @global do gem install {{ item.name }}"
-  with_items: "{{ compass_gems }}"
-  when: item.name not in installed_gems.stdout
-
-- name: "Gems | Update"
-  shell: "sudo {{ rvm_location }} @global do gem update {{ item.name }}"
-  with_items: "{{ compass_gems }}"
-  when: item.name in installed_gems.stdout
+  sudo_user: "{{ ansible_ssh_user }}"
+  gem: name={{ item.name }} executable={{ gem_location }} state=latest user_install=no
+  with_items: "{{ ruby_gems }}"

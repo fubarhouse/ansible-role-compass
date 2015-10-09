@@ -3,13 +3,14 @@
 vagrant_user: "vagrant"
 
 # ruby version
-ruby_version: "2.2.1"
+ruby_version: "2.2.0"
 
 # rvm install localtion
-rvm_location: "/home/vagrant/.rvm/bin/rvm"
+rvm_location: "/home/{{ ansible_ssh_user }}/.rvm/bin/rvm"
+gem_location: "/home/{{ ansible_ssh_user }}/.rvm/rubies/ruby-{{ ruby_version }}/bin/gem"
 
 # compass gems to install
-compass_gems:
+ruby_gems:
   - { name: bundler }
   - { name: sass }
   - { name: compass }

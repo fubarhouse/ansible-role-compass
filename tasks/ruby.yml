@@ -4,19 +4,23 @@
 - name: "Ruby | Check version"
   sudo: yes
   sudo_user: "{{ vagrant_user }}"
-  shell: "{{ rvm_location }} ls"
+  shell: "{{ rvm_location }} versions"
   register: ruby_version_current
   ignore_errors: yes
   no_log: yes
 
 - name: "Ruby | Install"
   sudo: yes
-  sudo_user: "{{ vagrant_user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   shell: "{{ rvm_location }} install ruby-{{ ruby_version }}"
   when: "'{{ ruby_version }}' not in '{{ ruby_version_current.stdout }}'"
 
 - name: "Ruby | Configuring"
   sudo: yes
-  sudo_user: "{{ vagrant_user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   shell: "{{ rvm_location }} alias create default {{ ruby_version }}"
+  when: "'{{ ruby_version }}' not in '{{ ruby_version_current.stdout }}'"
+
+- name: "Ruby | Symlinking"
+  file: src=/home/{{ ansible_ssh_user }}/.rvm/rubies/ruby-{{ ruby_version }}/bin/ruby dest=/usr/bin/ruby state=link
   when: "'{{ ruby_version }}' not in '{{ ruby_version_current.stdout }}'"
