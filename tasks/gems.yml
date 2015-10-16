@@ -2,7 +2,7 @@
 # file: roles/fubarhouse.ruby/tasks/gems.yml
 
 - name: "Gems | Ensure installed and updated"
-  sudo: yes
-  sudo_user: "{{ ansible_ssh_user }}"
+  become: yes
+  become_user: "{{ ansible_ssh_user }}"
   gem: name={{ item.name }} executable={{ gem_location }} state=latest user_install=no
   with_items: "{{ ruby_gems }}"

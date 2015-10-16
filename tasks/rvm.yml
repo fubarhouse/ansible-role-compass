@@ -2,33 +2,33 @@
 # file: roles/fubarhouse.ruby/tasks/nvm.yml
 
 - name: "RVM | Check for install"
-  sudo: yes
-  sudo_user: "{{ ansible_ssh_user }}"
+  become: yes
+  become_user: "{{ ansible_ssh_user }}"
   stat: path={{ rvm_location }}
   register: rvm_installed
   # ignore_errors: yes
   no_log: yes
 
 - name: "RVM | Install Key"
-  sudo: yes
-  sudo_user: "{{ ansible_ssh_user }}"
+  become: yes
+  become_user: "{{ ansible_ssh_user }}"
   shell: gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
   when: "{{ rvm_installed.stat.exists }} == false"
 
 - name: "RVM | Install"
-  sudo: yes
-  sudo_user: "{{ ansible_ssh_user }}"
+  become: yes
+  become_user: "{{ ansible_ssh_user }}"
   shell: \curl https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer | bash -s stable
   when: "{{ rvm_installed.stat.exists }} == false"
 
 - name: "Ruby | Aliasing"
-  sudo: yes
-  sudo_user: "{{ ansible_ssh_user }}"
+  become: yes
+  become_user: "{{ ansible_ssh_user }}"
   shell: "{{ rvm_location }} alias create default {{ ruby_version }}"
   when: "{{ rvm_installed.stat.exists }} == false"
 
 - name: "RVM | Configure"
-  sudo: yes
-  sudo_user: "{{ ansible_ssh_user }}"
+  become: yes
+  become_user: "{{ ansible_ssh_user }}"
   shell: echo "source /home/{{ vagrant_user }}/.rvm/scripts/rvm" >> ~/.bash_profile
   when: "{{ rvm_installed.stat.exists }} == false"
