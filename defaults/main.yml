@@ -2,6 +2,12 @@
 # vagrant user
 vagrant_user: "vagrant"
 
+# rvm key
+rvm_installer_origin: "https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer"
+rvm_installer_path: "/opt/rvm-installer.sh"
+rvm_key_origin: "https://rvm.io/mpapis.asc"
+rvm_key_path: "/opt/private.key"
+
 # ruby version
 ruby_version: "2.2.0"
 
