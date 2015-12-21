@@ -13,6 +13,7 @@ ruby_version: "2.2.0"
 
 # rvm install localtion
 rvm_location: "/home/{{ ansible_ssh_user }}/.rvm/bin/rvm"
+ruby_location: "/home/{{ ansible_ssh_user }}/.rvm/rubies/ruby-2.2.0/bin/ruby"
 gem_location: "/home/{{ ansible_ssh_user }}/.rvm/rubies/ruby-{{ ruby_version }}/bin/gem"
 
 # compass gems to install
