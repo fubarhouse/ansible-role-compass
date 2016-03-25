@@ -37,6 +37,7 @@ Installs RVM, Ruby and Gems on RHEL/CentOS and Debian/Ubuntu servers.
   ### Install paths
   ````
   fubarhouse_ruby.rvm_install_path: "binscripts"
+  fubarhouse_ruby.rvm_path: "bin"
   fubarhouse_ruby.gem_path: "rubies/ruby-{{ ruby_version }}/bin"
   ````
   ### Executables

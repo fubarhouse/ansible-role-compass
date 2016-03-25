@@ -18,6 +18,7 @@ fubarhouse_ruby:
   rvm_install_dir: "~/.rvm"
   # Install paths
   rvm_install_path: "binscripts"
+  rvm_path: "bin"
   gem_path: "rubies/ruby-{{ ruby_version }}/bin"
   # Executables
   rvm_exec: "rvm"

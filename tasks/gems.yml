@@ -6,7 +6,7 @@
   become_user: "{{ ansible_ssh_user }}"
   gem:
     name: "{{ item.name }}"
-    executable: "{{ rvm_install_dir.rvm_install_dir }}/{{ rvm_install_dir.gem_path }}/{{ rvm_install_dir.gem_exec }}"
+    executable: "{{ rvm_install_dir.rvm_install_dir }}/{{ rvm_path.gem_path }}/{{ rvm_install_dir.gem_exec }}"
     state: latest
     user_install: no
   with_items: "{{ rvm_install_dir.packages }}"

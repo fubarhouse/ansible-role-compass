@@ -4,7 +4,7 @@
 - name: "Ruby | Check version"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_install_path }}/{{ fubarhouse_ruby.rvm_exec }} ls | grep '=*' | grep {{ fubarhouse_ruby.ruby_version }}"
+  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} ls | grep '=*' | grep {{ fubarhouse_ruby.ruby_version }}"
   register: fubarhouse_ruby_ruby_version_current
   ignore_errors: yes
   no_log: yes
@@ -12,19 +12,19 @@
 - name: "Ruby | Aliasing"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_install_path }}/{{ fubarhouse_ruby.rvm_exec }} alias create default {{ fubarhouse_ruby.ruby_version }}"
+  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} alias create default {{ fubarhouse_ruby.ruby_version }}"
   when: "'{{ ruby_version }}' not in '{{ fubarhouse_ruby_ruby_version_current.stdout }}'"
 
 - name: "Ruby | Install"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_install_path }}/{{ fubarhouse_ruby.rvm_exec }} install {{ fubarhouse_ruby.ruby_version }}"
+  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} install {{ fubarhouse_ruby.ruby_version }}"
   when: "'{{ ruby_version }}' not in '{{ fubarhouse_ruby_ruby_version_current.stdout }}'"
 
 - name: "Ruby | Configuring"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_install_path }}/{{ fubarhouse_ruby.rvm_exec }} alias create default {{ fubarhouse_ruby.ruby_version }}"
+  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} alias create default {{ fubarhouse_ruby.ruby_version }}"
   when: "'{{ fubarhouse_ruby.ruby_version }}' not in '{{ fubarhouse_ruby_ruby_version_current.stdout }}'"
 
 - name: "Ruby | Symlinking"

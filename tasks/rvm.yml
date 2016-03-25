@@ -52,4 +52,4 @@
 - name: "RVM | Ensuring updated..."
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_install_path }}/{{ fubarhouse_ruby.rvm_exec }} get stable"
+  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} get stable"
