@@ -2,7 +2,7 @@
 
 fubarhouse_ruby:
   # Clean install
-  clean_install: true
+  clean_install: false
   # Process controls
   install_rvm: true
   install_ruby: true
