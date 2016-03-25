@@ -1,23 +1,32 @@
 ---
-# vagrant user
-vagrant_user: "vagrant"
 
-# rvm key
-rvm_installer_origin: "https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer"
-rvm_installer_path: "/opt/rvm-installer.sh"
-rvm_key_origin: "https://rvm.io/mpapis.asc"
-rvm_key_path: "/opt/private.key"
-
-# ruby version
-ruby_version: "2.2.0"
-
-# rvm install localtion
-rvm_location: "/home/{{ ansible_ssh_user }}/.rvm/bin/rvm"
-ruby_location: "/home/{{ ansible_ssh_user }}/.rvm/rubies/ruby-2.2.0/bin/ruby"
-gem_location: "/home/{{ ansible_ssh_user }}/.rvm/rubies/ruby-{{ ruby_version }}/bin/gem"
-
-# compass gems to install
-ruby_gems:
-  - { name: bundler }
-  - { name: sass }
-  - { name: compass }
+fubarhouse_ruby:
+  # Clean install
+  clean_install: true
+  # Process controls
+  install_rvm: true
+  install_ruby: true
+  install_gems: false
+  # Key
+  rvm_key_keyserver: "hkp://keys.gnupg.net"
+  rvm_key_id: "409B6B1796C275462A1703113804BB82D39DC0E3"
+  rvm_key_keyring: /etc/apt/trusted.gpg.d/debian.gpg
+  # Repositories
+  rvm_repo: "https://github.com/rvm/rvm.git"
+  # Symlinks
+  # Install directories
+  rvm_install_dir: "~/.rvm"
+  # Install paths
+  rvm_install_path: "binscripts"
+  gem_path: "rubies/ruby-{{ ruby_version }}/bin"
+  # Executables
+  rvm_exec: "rvm"
+  rvm_install_exec: "rvm-installer"
+  gem_exec: "gem"
+  # Application versions
+  ruby_version: "2.3.0"
+  # Packages
+  packages:
+    - { name: bundler }
+    - { name: sass }
+    - { name: compass }

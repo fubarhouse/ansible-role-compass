@@ -2,7 +2,10 @@
 # file: roles/fubarhouse.ruby/tasks/main.yml
 
 - include: rvm.yml
+  when: fubarhouse_ruby.install_rvm
 
 - include: ruby.yml
+  when: fubarhouse_ruby.install_ruby
 
 - include: gems.yml
+  when: fubarhouse_ruby.install_gems

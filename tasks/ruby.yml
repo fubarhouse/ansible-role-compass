@@ -4,29 +4,35 @@
 - name: "Ruby | Check version"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  shell: "{{ rvm_location }} ls"
-  register: ruby_version_current
+  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_install_path }}/{{ fubarhouse_ruby.rvm_exec }} ls | grep '=*' | grep {{ fubarhouse_ruby.ruby_version }}"
+  register: fubarhouse_ruby_ruby_version_current
   ignore_errors: yes
   no_log: yes
+
+- name: "Ruby | Aliasing"
+  become: yes
+  become_user: "{{ ansible_ssh_user }}"
+  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_install_path }}/{{ fubarhouse_ruby.rvm_exec }} alias create default {{ fubarhouse_ruby.ruby_version }}"
+  when: "'{{ ruby_version }}' not in '{{ fubarhouse_ruby_ruby_version_current.stdout }}'"
 
 - name: "Ruby | Install"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  shell: "{{ rvm_location }} install {{ ruby_version }}"
-  # when: "'{{ ruby_version }}' not in '{{ ruby_version_current.stdout }}'"
+  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_install_path }}/{{ fubarhouse_ruby.rvm_exec }} install {{ fubarhouse_ruby.ruby_version }}"
+  when: "'{{ ruby_version }}' not in '{{ fubarhouse_ruby_ruby_version_current.stdout }}'"
 
 - name: "Ruby | Configuring"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  shell: "{{ rvm_location }} alias create default {{ ruby_version }}"
-  # when: "'{{ ruby_version }}' not in '{{ ruby_version_current.stdout }}'"
+  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_install_path }}/{{ fubarhouse_ruby.rvm_exec }} alias create default {{ fubarhouse_ruby.ruby_version }}"
+  when: "'{{ fubarhouse_ruby.ruby_version }}' not in '{{ fubarhouse_ruby_ruby_version_current.stdout }}'"
 
 - name: "Ruby | Symlinking"
   become: yes
-  become_user: root
+  become_user: "{{ ansible_ssh_user }}"
   file:
-    src: "/home/{{ ansible_ssh_user }}/.rvm/rubies/ruby-{{ ruby_version }}/bin/ruby"
+    src: "{{ fubarhouse_ruby.rvm_install_dir }}/rubies/ruby-{{ fubarhouse_ruby.ruby_version }}/bin/ruby"
     dest: "/usr/bin/ruby"
     state: link
     force: true
-  # when: "'{{ ruby_version }}' not in '{{ ruby_version_current.stdout }}'"
+  when: "'{{ fubarhouse_ruby.ruby_version }}' not in '{{ fubarhouse_ruby_ruby_version_current.stdout }}'"

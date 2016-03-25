@@ -1,71 +1,55 @@
 ---
 # file: roles/fubarhouse.ruby/tasks/nvm.yml
 
-- name: "RVM | Check for install"
+- name: "RVM | Clean-up"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  stat: path={{ rvm_location }}
-  register: rvm_installed
+  file:
+    path: "{{ fubarhouse_ruby.rvm_install_dir }}"
+    state: absent
+  when: fubarhouse_ruby.clean_install
+
+- name: "RVM | Check"
+  become: yes
+  become_user: "{{ ansible_ssh_user }}"
+  stat:
+    path: "{{ fubarhouse_ruby.rvm_install_dir }}"
+  register: fubarhouse_ruby_rvm_installed
   # ignore_errors: yes
   no_log: yes
 
-- name: "RVM | Download private key"
-  become: yes
-  become_user: root
-  get_url:
-    url: "{{ rvm_key_origin }}"
-    dest: "{{ rvm_key_path }}"
-    mode: 0755
-  when: "{{ rvm_installed.stat.exists }} == false"
-
-- name: "RVM | Install Key"
-  become: yes
-  become_user: root
+- name: "RVM | Ensure key is present"
   apt_key:
-    file: "{{ rvm_key_path }}"
-    keyring: /etc/apt/trusted.gpg.d/debian.gpg
+    keyserver: "{{ fubarhouse_ruby.rvm_key_keyserver }}"
+    id: "{{ fubarhouse_ruby.rvm_key_id }}"
+    keyring: "{{ fubarhouse_ruby.rvm_key_keyring }}"
     state: present
-  when: "{{ rvm_installed.stat.exists }} == false"
 
-- name: "RVM | Remove private key"
+- name: "RVM | Clone/Update"
   become: yes
-  become_user: root
-  file:
-    path: "{{ rvm_key_path }}"
-    state: absent
-  when: "{{ rvm_installed.stat.exists }} == false"
-
-- name: "RVM | Get installer"
-  become: yes
-  become_user: root
-  get_url:
-    url: "{{ rvm_installer_origin }}"
-    dest: "{{ rvm_installer_path }}"
-    mode: 0777
-  when: "{{ rvm_installed.stat.exists }} == false"
+  become_user: "{{ ansible_ssh_user }}"
+  git:
+    repo: "{{ fubarhouse_ruby.rvm_repo}}"
+    dest: "{{ fubarhouse_ruby.rvm_install_dir }}"
+    clone: yes
+    update: yes
+    force: yes
+    version: master
+    recursive: false
 
 - name: "RVM | Install"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  shell: "{{ rvm_installer_path }}"
-  when: "{{ rvm_installed.stat.exists }} == false"
-
-- name: "RVM | Remove installer"
-  become: yes
-  become_user: root
-  file:
-    path: "{{ rvm_installer_path }}"
-    state: absent
-  when: "{{ rvm_installed.stat.exists }} == false"
-
-- name: "Ruby | Aliasing"
-  become: yes
-  become_user: "{{ ansible_ssh_user }}"
-  shell: "{{ rvm_location }} alias create default {{ ruby_version }}"
-  when: "{{ rvm_installed.stat.exists }} == false"
+  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_install_path }}/{{ fubarhouse_ruby.rvm_install_exec }}"
+  when: "{{ fubarhouse_ruby_rvm_installed.stat.exists }} == false"
 
 - name: "RVM | Configure"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  shell: echo "source /home/{{ vagrant_user }}/.rvm/scripts/rvm" >> ~/.bash_profile
-  when: "{{ rvm_installed.stat.exists }} == false"
+  shell: echo "source {{ fubarhouse_ruby.rvm_install_dir }}/scripts/rvm" >> ~/.bash_profile
+  when: "{{ fubarhouse_ruby_rvm_installed.stat.exists }} == false"
+
+- name: "RVM | Ensuring updated..."
+  become: yes
+  become_user: "{{ ansible_ssh_user }}"
+  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_install_path }}/{{ fubarhouse_ruby.rvm_exec }} get stable"
