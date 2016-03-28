@@ -6,7 +6,7 @@ fubarhouse_ruby:
   # Process controls
   install_rvm: true
   install_ruby: true
-  install_gems: false
+  install_gems: true
   # Key
   rvm_key_keyserver: "hkp://keys.gnupg.net"
   rvm_key_id: "409B6B1796C275462A1703113804BB82D39DC0E3"

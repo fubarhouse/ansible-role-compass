@@ -18,7 +18,7 @@ Installs RVM, Ruby and Gems on RHEL/CentOS and Debian/Ubuntu servers.
   ````
   fubarhouse_ruby.install_rvm: true
   fubarhouse_ruby.install_ruby: true
-  fubarhouse_ruby.install_gems: false
+  fubarhouse_ruby.install_gems: true
   ````
   ### Key
   ````
