@@ -3,10 +3,9 @@
 
 - name: "Gems | Ensure installed and updated"
   become: yes
-  become_user: "{{ ansible_ssh_user }}"
+  become_user: "root"
   gem:
     name: "{{ item.name }}"
-    executable: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.gem_path }}/{{ fubarhouse_ruby.gem_exec }}"
     state: latest
-    user_install: no
+    executable: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.gem_path }}/{{ fubarhouse_ruby.gem_exec }}"
   with_items: "{{ fubarhouse_ruby.packages }}"

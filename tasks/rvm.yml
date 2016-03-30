@@ -22,7 +22,6 @@
   apt_key:
     keyserver: "{{ fubarhouse_ruby.rvm_key_keyserver }}"
     id: "{{ fubarhouse_ruby.rvm_key_id }}"
-    keyring: "{{ fubarhouse_ruby.rvm_key_keyring }}"
     state: present
 
 - name: "RVM | Clone/Update"
@@ -53,3 +52,4 @@
   become: yes
   become_user: "{{ ansible_ssh_user }}"
   shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} get stable"
+  when: fubarhouse_ruby.rvm_updater

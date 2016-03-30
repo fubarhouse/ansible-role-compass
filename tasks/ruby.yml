@@ -9,17 +9,21 @@
   ignore_errors: yes
   no_log: yes
 
-- name: "Ruby | Aliasing"
-  become: yes
-  become_user: "{{ ansible_ssh_user }}"
-  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} alias create default {{ fubarhouse_ruby.ruby_version }}"
-  when: "'{{ ruby_version }}' not in '{{ fubarhouse_ruby_ruby_version_current.stdout }}'"
-
 - name: "Ruby | Install"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
   shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} install {{ fubarhouse_ruby.ruby_version }}"
-  when: "'{{ ruby_version }}' not in '{{ fubarhouse_ruby_ruby_version_current.stdout }}'"
+  when: "'{{ fubarhouse_ruby.ruby_version }}' not in '{{ fubarhouse_ruby_ruby_version_current.stdout }}'"
+
+- name: "Ruby | Symlinking"
+  become: yes
+  become_user: "root"
+  file:
+    src: "{{ fubarhouse_ruby.rvm_install_dir }}/rubies/ruby-{{ fubarhouse_ruby.ruby_version }}/bin/ruby"
+    dest: "/usr/bin/ruby"
+    state: link
+    force: true
+  when: "'{{ fubarhouse_ruby.ruby_version }}' not in '{{ fubarhouse_ruby_ruby_version_current.stdout }}'"
 
 - name: "Ruby | Configuring"
   become: yes
@@ -27,12 +31,20 @@
   shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} alias create default {{ fubarhouse_ruby.ruby_version }}"
   when: "'{{ fubarhouse_ruby.ruby_version }}' not in '{{ fubarhouse_ruby_ruby_version_current.stdout }}'"
 
-- name: "Ruby | Symlinking"
+- name: "Ruby | Aliasing"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  file:
-    src: "{{ fubarhouse_ruby.rvm_install_dir }}/rubies/ruby-{{ fubarhouse_ruby.ruby_version }}/bin/ruby"
-    dest: "/usr/bin/ruby"
-    state: link
-    force: true
+  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} alias create default {{ fubarhouse_ruby.ruby_version }}"
   when: "'{{ fubarhouse_ruby.ruby_version }}' not in '{{ fubarhouse_ruby_ruby_version_current.stdout }}'"
+
+- name: "Ruby | Test for exports"
+  shell: "cat /home/{{ ansible_ssh_user }}/.bashrc | grep '/home/vagrant/.rvm/gems/ruby-{{ fubarhouse_ruby.ruby_version }}/bin'"
+  register: fubarhouse_ruby_ruby_install_path
+  ignore_errors: yes
+  no_log: yes
+
+- name: "Ruby | Import exports"
+  lineinfile:
+    dest: "/home/{{ ansible_ssh_user }}/.bashrc"
+    line: "export PATH=$PATH:/home/vagrant/.rvm/gems/ruby-{{ fubarhouse_ruby.ruby_version }}/bin"
+  when: fubarhouse_ruby_ruby_install_path
