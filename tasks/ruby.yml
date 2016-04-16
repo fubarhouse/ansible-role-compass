@@ -12,7 +12,8 @@
 - name: "Ruby | Install"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} install {{ fubarhouse_ruby.ruby_version }}"
+  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} install {{ item }}"
+  with_items: "{{ fubarhouse_ruby.all_ruby_versions }}"
   when: "'{{ fubarhouse_ruby.ruby_version }}' not in '{{ fubarhouse_ruby_ruby_version_current.stdout }}'"
 
 - name: "Ruby | Symlinking"

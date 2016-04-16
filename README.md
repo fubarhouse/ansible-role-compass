@@ -15,6 +15,9 @@ Installs RVM, Ruby and Gems on RHEL/CentOS and Debian/Ubuntu servers.
   fubarhouse_ruby:
   # Application versions
   ruby_version: "2.3.0"
+  # Application versions (non-default)
+  all_ruby_versions:
+    - 2.3.0
   # Clean install
   clean_install: true
   # Process controls
