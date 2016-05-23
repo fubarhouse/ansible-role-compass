@@ -4,8 +4,5 @@
 - name: "Gems | Ensure installed and updated"
   become: yes
   become_user: "root"
-  gem:
-    name: "{{ item.name }}"
-    state: latest
-    executable: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.gem_path }}/{{ fubarhouse_ruby.gem_exec }}"
+  shell: '{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} @global do gem install {{ item.name }}'
   with_items: "{{ fubarhouse_ruby.packages }}"
