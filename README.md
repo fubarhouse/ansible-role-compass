@@ -13,6 +13,11 @@ Installs RVM, Ruby and Gems on RHEL/CentOS and Debian/Ubuntu servers.
   ````
 
   fubarhouse_ruby:
+  # Shell profiles
+  shell_profiles:
+    - { filename: shell }
+    - { filename: .bashrc }
+    - { filename: .bash_profile }
   # Application versions
   ruby_version: "2.3.0"
   # Application versions (non-default)
