@@ -1,0 +1,6 @@
+---
+# file: roles/fubarhouse.ruby/tasks/gems.yml
+
+- name: "Gems | Ensure installed and updated"
+  shell: '{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} @global do gem install {{ item }}'
+  with_items: "{{ ruby_packages }}"

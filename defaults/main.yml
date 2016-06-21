@@ -1,41 +1,10 @@
 ---
 
-fubarhouse_ruby:
-  # Shell profiles
-  shell_profiles:
-    - { filename: shell }
-    - { filename: .bashrc }
-    - { filename: .bash_profile }
-  # Application versions
-  ruby_version: "2.3.0"
-  # Application versions (non-default)
-  all_ruby_versions:
-    - 2.3.0
-  # Clean install
-  clean_install: true
-  # Process controls
-  install_rvm: true
-  install_ruby: true
-  install_gems: true
-  rvm_updater: false
-  # Key
-  rvm_key_keyserver: "hkp://keys.gnupg.net"
-  rvm_key_id: "409B6B1796C275462A1703113804BB82D39DC0E3"
-  # Repositories
-  rvm_repo: "https://github.com/rvm/rvm.git"
-  # Symlinks
-  # Install directories
-  rvm_install_dir: "/home/{{ ansible_ssh_user }}/.rvm"
-  # Install paths
-  rvm_install_path: "binscripts"
-  rvm_path: "bin"
-  gem_path: "rubies/ruby-2.3.0/bin"
-  # Executables
-  rvm_exec: "rvm"
-  rvm_install_exec: "rvm-installer"
-  gem_exec: "gem"
-  # Packages
-  packages:
-    - { name: bundler }
-    - { name: sass }
-    - { name: compass }
+ruby_version: 2.3.0
+ruby_versions:
+  - 2.3.0
+
+ruby_packages:
+  - bundler
+  - sass
+  - compass

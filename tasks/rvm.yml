@@ -7,26 +7,23 @@
   file:
     path: "{{ fubarhouse_ruby.rvm_install_dir }}"
     state: absent
-  when: fubarhouse_ruby.clean_install
+  when: fubarhouse_ruby.clean_install == true
 
 - name: "RVM | Check"
   become: yes
-  become_user: "{{ ansible_ssh_user }}"
+  become_user: "{{ fubarhouse_user }}"
   stat:
     path: "{{ fubarhouse_ruby.rvm_install_dir }}"
   register: fubarhouse_ruby_rvm_installed
   # ignore_errors: yes
   no_log: yes
 
-- name: "RVM | Ensure key is present"
-  apt_key:
-    keyserver: "{{ fubarhouse_ruby.rvm_key_keyserver }}"
-    id: "{{ fubarhouse_ruby.rvm_key_id }}"
-    state: present
+- name: "RVM | Include OS-specific tasks for GPG"
+  include: "tasks-{{ ansible_os_family }}.yml"
 
 - name: "RVM | Clone/Update"
   become: yes
-  become_user: "{{ ansible_ssh_user }}"
+  become_user: "{{ fubarhouse_user }}"
   git:
     repo: "{{ fubarhouse_ruby.rvm_repo}}"
     dest: "{{ fubarhouse_ruby.rvm_install_dir }}"
@@ -38,36 +35,41 @@
 
 - name: "RVM | Install"
   become: yes
-  become_user: "{{ ansible_ssh_user }}"
+  become_user: "{{ fubarhouse_user }}"
   shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_install_path }}/{{ fubarhouse_ruby.rvm_install_exec }}"
   when: "{{ fubarhouse_ruby_rvm_installed.stat.exists }} == false"
 
 - name: "RVM | Configure"
   become: yes
-  become_user: "{{ ansible_ssh_user }}"
-  shell: echo "source {{ fubarhouse_ruby.rvm_install_dir }}/scripts/rvm" >> ~/.bash_profile
+  become_user: "{{ fubarhouse_user }}"
+  lineinfile:
+      dest: "{{ fubarhouse_ruby.user_dir }}/{{ item.filename }}"
+      state: present
+      regexp: 'source {{ fubarhouse_ruby.rvm_install_dir }}/scripts/rvm;'
+      line: 'source {{ fubarhouse_ruby.rvm_install_dir }}/scripts/rvm;'
   when: "{{ fubarhouse_ruby_rvm_installed.stat.exists }} == false"
+  with_items: "{{ fubarhouse_ruby.shell_profiles }}"
 
 - name: RVM | Ensure shell profiles are available
   become: yes
-  become_user: "{{ ansible_ssh_user }}"
+  become_user: "{{ fubarhouse_user }}"
   file:
-    path: /home/{{ ansible_ssh_user }}/{{ item.filename }}
+    path: "{{ fubarhouse_ruby.user_dir }}/{{ item.filename }}"
     state: touch
-  with_items: "{{ fubarhouse_python.shell_profiles }}"
+  with_items: "{{ fubarhouse_ruby.shell_profiles }}"
 
 - name: RVM | Ensure shell profiles are configured
   become: yes
-  become_user: "{{ ansible_ssh_user }}"
+  become_user: "{{ fubarhouse_user }}"
   lineinfile:
-    dest: "/home/{{ ansible_ssh_user }}/{{ item.filename }}"
+    dest: "{{ fubarhouse_ruby.user_dir }}/{{ item.filename }}"
     state: present
     regexp: '/.rvm/gems/ruby-'
-    line: 'export PATH="/home/{{ ansible_ssh_user }}/.rvm/gems/ruby-{{ fubarhouse_ruby.ruby_version }}/bin:${PATH}";'
-  with_items: "{{ fubarhouse_python.shell_profiles }}"
+    line: 'export PATH="{{ fubarhouse_ruby.user_dir }}/.rvm/gems/ruby-{{ ruby_version }}/bin:${PATH}";'
+  with_items: "{{ fubarhouse_ruby.shell_profiles }}"
 
 - name: "RVM | Ensuring updated..."
   become: yes
-  become_user: "{{ ansible_ssh_user }}"
+  become_user: "{{ fubarhouse_user }}"
   shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} get stable"
   when: fubarhouse_ruby.rvm_updater

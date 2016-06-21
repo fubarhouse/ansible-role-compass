@@ -3,7 +3,7 @@
 
 - name: "Ruby | Check version"
   become: yes
-  become_user: "{{ ansible_ssh_user }}"
+  become_user: "{{ fubarhouse_user }}"
   shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} ls | grep '=*' | grep {{ fubarhouse_ruby.ruby_version }}"
   register: fubarhouse_ruby_ruby_version_current
   ignore_errors: yes
@@ -11,41 +11,31 @@
 
 - name: "Ruby | Install"
   become: yes
-  become_user: "{{ ansible_ssh_user }}"
+  become_user: "{{ fubarhouse_user }}"
   shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} install {{ item }}"
-  with_items: "{{ fubarhouse_ruby.all_ruby_versions }}"
-  when: "'{{ fubarhouse_ruby.ruby_version }}' not in '{{ fubarhouse_ruby_ruby_version_current.stdout }}'"
+  with_items: "{{ ruby_versions }}"
 
 - name: "Ruby | Symlinking"
   become: yes
   become_user: "root"
   file:
-    src: "{{ fubarhouse_ruby.rvm_install_dir }}/rubies/ruby-{{ fubarhouse_ruby.ruby_version }}/bin/ruby"
-    dest: "/usr/bin/ruby"
+    src: "{{ fubarhouse_ruby.rvm_install_dir }}/rubies/ruby-{{ ruby_version }}/bin/ruby"
+    dest: "/usr/local/bin/ruby"
     state: link
     force: true
-  when: "'{{ fubarhouse_ruby.ruby_version }}' not in '{{ fubarhouse_ruby_ruby_version_current.stdout }}'"
 
 - name: "Ruby | Configuring"
   become: yes
-  become_user: "{{ ansible_ssh_user }}"
-  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} alias create default {{ fubarhouse_ruby.ruby_version }}"
-  when: "'{{ fubarhouse_ruby.ruby_version }}' not in '{{ fubarhouse_ruby_ruby_version_current.stdout }}'"
+  become_user: "{{ fubarhouse_user }}"
+  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} alias create default {{ ruby_version }}"
 
 - name: "Ruby | Aliasing"
   become: yes
-  become_user: "{{ ansible_ssh_user }}"
-  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} alias create default {{ fubarhouse_ruby.ruby_version }}"
-  when: "'{{ fubarhouse_ruby.ruby_version }}' not in '{{ fubarhouse_ruby_ruby_version_current.stdout }}'"
-
-- name: "Ruby | Test for exports"
-  shell: "cat /home/{{ ansible_ssh_user }}/.bashrc | grep '/home/vagrant/.rvm/gems/ruby-{{ fubarhouse_ruby.ruby_version }}/bin'"
-  register: fubarhouse_ruby_ruby_install_path
-  ignore_errors: yes
-  no_log: yes
+  become_user: "{{ fubarhouse_user }}"
+  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} use {{ ruby_version }}"
 
 - name: "Ruby | Import exports"
   lineinfile:
-    dest: "/home/{{ ansible_ssh_user }}/.bashrc"
-    line: "export PATH=$PATH:/home/vagrant/.rvm/gems/ruby-{{ fubarhouse_ruby.ruby_version }}/bin"
-  when: fubarhouse_ruby_ruby_install_path
+    dest: "{{ fubarhouse_ruby.user_dir }}/{{ item.filename }}"
+    line: "export PATH=$PATH:{{ fubarhouse_ruby.user_dir }}/.rvm/gems/ruby-{{ ruby_version }}/bin"
+  with_items: "{{ fubarhouse_ruby.shell_profiles }}"
