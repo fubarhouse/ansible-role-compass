@@ -39,6 +39,14 @@
   shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_install_path }}/{{ fubarhouse_ruby.rvm_install_exec }}"
   when: "{{ fubarhouse_ruby_rvm_installed.stat.exists }} == false"
 
+- name: RVM | Ensure shell profiles are available
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
+  file:
+    path: "{{ fubarhouse_ruby.user_dir }}/{{ item.filename }}"
+    state: touch
+  with_items: "{{ fubarhouse_ruby.shell_profiles }}"
+
 - name: "RVM | Configure"
   become: yes
   become_user: "{{ fubarhouse_user }}"
@@ -48,14 +56,6 @@
       regexp: 'source {{ fubarhouse_ruby.rvm_install_dir }}/scripts/rvm;'
       line: 'source {{ fubarhouse_ruby.rvm_install_dir }}/scripts/rvm;'
   when: "{{ fubarhouse_ruby_rvm_installed.stat.exists }} == false"
-  with_items: "{{ fubarhouse_ruby.shell_profiles }}"
-
-- name: RVM | Ensure shell profiles are available
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
-  file:
-    path: "{{ fubarhouse_ruby.user_dir }}/{{ item.filename }}"
-    state: touch
   with_items: "{{ fubarhouse_ruby.shell_profiles }}"
 
 - name: RVM | Ensure shell profiles are configured
