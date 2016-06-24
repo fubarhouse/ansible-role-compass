@@ -1,5 +1,7 @@
 # Ansible Role: Ruby
 
+[![Build Status](https://travis-ci.org/fubarhouse/fubarhouse.ruby.svg?branch=master)](https://travis-ci.org/fubarhouse/fubarhouse.ruby)
+
 Installs RVM, Ruby and Gems on RHEL/CentOS and Debian/Ubuntu servers.
 
 ## Requirements
