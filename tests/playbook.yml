@@ -5,8 +5,7 @@
   vars:
     ansible_ssh_user: root
     ruby_version: 2.3.0
-    ruby_versions:
-      - 2.3.0
+    ruby_versions: []
     ruby_packages:
       - sass
   roles:
