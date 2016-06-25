@@ -19,7 +19,7 @@
   become_user: "{{ fubarhouse_user }}"
   shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} install {{ item }}"
   with_items: "{{ ruby_versions }}"
-  when: '"{{ item }}" not in installed_ruby_versions.stdout'
+  when: '"{{ item }}" not in "{{ installed_ruby_versions.stdout }}"'
 
 - name: "Ruby | Symlinking"
   become: yes
