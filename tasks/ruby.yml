@@ -12,7 +12,7 @@
   become_user: "{{ fubarhouse_user }}"
   shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} install {{ ruby_version }}"
   with_items: "{{ ruby_versions }}"
-  when: '"{{ ruby_version }}" not in "{{ ruby_versions }}" and "{{ ruby_version }}" not in "{{ installed_ruby_versions.stdout}}"'
+  when: '"{{ ruby_version }}" not in "{{ ruby_versions }}" and "{{ ruby_version }}" not in "{{ installed_ruby_versions.stdout }}"'
 
 - name: "Ruby | Install all requested versions"
   become: yes
