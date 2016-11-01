@@ -6,7 +6,7 @@ Installs RVM, Ruby and Gems on RHEL/CentOS and Debian/Ubuntu servers.
 
 ## Requirements
 
-  None.
+  * GPG
 
 ## Role Variables
 

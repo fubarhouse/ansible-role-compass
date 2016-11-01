@@ -1,6 +1,13 @@
 ---
-
-- name: "RVM | Ensure key is present"
+- name: "RVM | Look for key"
   become: yes
   become_user: "root"
-  command: gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+  command: "gpg --batch --search-keys '(RVM Key)'"
+  register: rvm_gpg_key
+  failed_when: false
+
+- name: "RVM | Install key"
+  become: yes
+  become_user: "root"
+  command: "gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3"
+  when: "'(RVM Key)' not in rvm_gpg_key.stdout"

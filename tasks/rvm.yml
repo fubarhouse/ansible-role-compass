@@ -9,6 +9,14 @@
     state: absent
   when: fubarhouse_ruby.clean_install == true
 
+- name: "Ruby | Cleaning exports"
+  lineinfile:
+    dest: "{{ fubarhouse_ruby.user_dir }}/{{ item.filename }}"
+    regexp: "/.rvm/gems/ruby-{{ ruby_version }}/bin"
+    line: "export PATH=$PATH:{{ fubarhouse_ruby.user_dir }}/.rvm/gems/ruby-{{ ruby_version }}/bin"
+    state: absent
+  with_items: "{{ fubarhouse_ruby.shell_profiles }}"
+
 - name: "RVM | Check"
   become: yes
   become_user: "{{ fubarhouse_user }}"
@@ -46,6 +54,7 @@
     path: "{{ fubarhouse_ruby.user_dir }}/{{ item.filename }}"
     state: touch
   with_items: "{{ fubarhouse_ruby.shell_profiles }}"
+  ignore_errors: yes
 
 - name: "RVM | Configure"
   become: yes
@@ -57,16 +66,18 @@
       line: 'source {{ fubarhouse_ruby.rvm_install_dir }}/scripts/rvm;'
   when: "{{ fubarhouse_ruby_rvm_installed.stat.exists }} == false"
   with_items: "{{ fubarhouse_ruby.shell_profiles }}"
+  ignore_errors: yes
 
 - name: RVM | Ensure shell profiles are configured
   become: yes
   become_user: "{{ fubarhouse_user }}"
   lineinfile:
     dest: "{{ fubarhouse_ruby.user_dir }}/{{ item.filename }}"
-    state: present
-    regexp: '/.rvm/gems/ruby-'
+    regexp: '/.rvm/gems/ruby-{{ ruby_version }}'
     line: 'export PATH="{{ fubarhouse_ruby.user_dir }}/.rvm/gems/ruby-{{ ruby_version }}/bin:${PATH}";'
+    state: present
   with_items: "{{ fubarhouse_ruby.shell_profiles }}"
+  ignore_errors: yes
 
 - name: "RVM | Ensuring updated..."
   become: yes
