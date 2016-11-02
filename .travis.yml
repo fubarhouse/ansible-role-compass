@@ -9,10 +9,11 @@ install:
   - pip install ansible
 
 script:
+  - sudo rm -rf /home/travis/.rvm
   - cd tests
   - ansible-playbook -i inventory playbook.yml --syntax-check
   - ansible-playbook -i inventory playbook.yml --sudo -vvvv
-  - "ls -lah /home/root/.rvm"
-  - "ls -lah /home/root/.rvm/rubies"
-  - "ls -lah /home/root/.rvm/rubies/ruby-*"
-  - "ls -lah /home/root/.rvm/rubies/ruby-*/bin/"
+  - "ls -lah /home/travis/.rvm"
+  - "ls -lah /home/travis/.rvm/rubies"
+  - "ls -lah /home/travis/.rvm/rubies/ruby-*"
+  - "ls -lah /home/travis/.rvm/rubies/ruby-*/bin/"
