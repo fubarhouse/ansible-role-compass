@@ -9,5 +9,5 @@
     ruby_packages:
       - sass
   roles:
-    - { role: ../../fubarhouse.ruby }
+    - { role: ../../ansible-role-ruby }
 

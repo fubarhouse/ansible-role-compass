@@ -1,5 +1,5 @@
 ---
-# file: roles/fubarhouse.ruby/tasks/ruby.yml
+# file: tasks/ruby.yml
 
 - name: "Ruby | Check version"
   become: yes

@@ -1,6 +1,6 @@
 # Ansible Role: Ruby
 
-[![Build Status](https://travis-ci.org/fubarhouse/fubarhouse.ruby.svg?branch=master)](https://travis-ci.org/fubarhouse/fubarhouse.ruby)
+[![Build Status](https://travis-ci.org/fubarhouse/ansible-role-ruby.svg?branch=master)](https://travis-ci.org/fubarhouse/ansible-role-ruby)
 
 Installs RVM, Ruby and Gems on RHEL/CentOS and Debian/Ubuntu servers.
 
@@ -11,35 +11,37 @@ Installs RVM, Ruby and Gems on RHEL/CentOS and Debian/Ubuntu servers.
 ## Role Variables
 
 Default Ruby version
-
-    ruby_version: 2.3.0
-
-All Ruby versions to install
-
-    ruby_versions:
-      - 2.3.0
-
+````
+ruby_version: 2.3.0
+````
+All other Ruby versions to install
+````
+ruby_versions:
+  - 2.3.0
+````
 Ruby packages to download
-
-    ruby_packages:
-      - bundler
-      - sass
-      - compass
-
+````
+ruby_packages:
+  - bundler
+  - sass
+  - compass
+````
 ## Dependencies
 
   None.
 
 ## Example Playbook
 
-```
-  - { role: fubarhouse.ruby }
-```
-
-## Installation
-
-* Add the RVM role to your playbook.
-* Modify above variables as desired.
+````
+- hosts: localhost
+  sudo: true
+  vars:
+  ruby_version: 2.3.0
+  ruby_packages:
+    - sass
+  roles:
+  - fubarhouse.ruby
+````
 
 ## License
 

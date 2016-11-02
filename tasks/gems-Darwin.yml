@@ -1,10 +1,9 @@
 ---
-# file: roles/fubarhouse.ruby/tasks/gems.yml
+# file: tasks/gems-Darwin.yml
 
 - name: "Gems | Ensure installed and updated"
   become: yes
   become_user: "root"
-  # shell: '{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} @global do gem install {{ item }}'
   gem:
     name: "{{ item }}"
     state: latest

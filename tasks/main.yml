@@ -1,5 +1,5 @@
 ---
-# file: roles/fubarhouse.ruby/tasks/main.yml
+# file: tasks/main.yml
 
 - name: "Define user variable for ssh use"
   set_fact:

@@ -1,5 +1,5 @@
 ---
-# file: roles/fubarhouse.ruby/tasks/nvm.yml
+# file: tasks/nvm.yml
 
 - name: "RVM | Clean-up"
   become: yes
