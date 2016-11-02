@@ -1,22 +1,6 @@
 ---
 # file: tasks/nvm.yml
 
-- name: "RVM | Clean-up"
-  become: yes
-  become_user: "root"
-  file:
-    path: "{{ fubarhouse_ruby.rvm_install_dir }}"
-    state: absent
-  when: fubarhouse_ruby.clean_install == true
-
-- name: "Ruby | Cleaning exports"
-  lineinfile:
-    dest: "{{ fubarhouse_ruby.user_dir }}/{{ item.filename }}"
-    regexp: "/.rvm/gems/ruby-{{ ruby_version }}/bin"
-    line: "export PATH=$PATH:{{ fubarhouse_ruby.user_dir }}/.rvm/gems/ruby-{{ ruby_version }}/bin"
-    state: absent
-  with_items: "{{ fubarhouse_ruby.shell_profiles }}"
-
 - name: "RVM | Check"
   become: yes
   become_user: "{{ fubarhouse_user }}"
@@ -68,7 +52,7 @@
   with_items: "{{ fubarhouse_ruby.shell_profiles }}"
   ignore_errors: yes
 
-- name: RVM | Ensure shell profiles are configured
+- name: RVM | Ensure shell profiles are configured for default version
   become: yes
   become_user: "{{ fubarhouse_user }}"
   lineinfile:
@@ -76,7 +60,21 @@
     regexp: '/.rvm/gems/ruby-{{ ruby_version }}'
     line: 'export PATH="{{ fubarhouse_ruby.user_dir }}/.rvm/gems/ruby-{{ ruby_version }}/bin:${PATH}";'
     state: present
-  with_items: "{{ fubarhouse_ruby.shell_profiles }}"
+  with_items:
+    - "{{ fubarhouse_ruby.shell_profiles }}"
+  ignore_errors: yes
+
+- name: RVM | Ensure shell profiles are configured for all versions
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
+  lineinfile:
+    dest: "{{ fubarhouse_ruby.user_dir }}/{{ item[0].filename }}"
+    regexp: '/.rvm/gems/ruby-{{ item[1] }}'
+    line: 'export PATH="{{ fubarhouse_ruby.user_dir }}/.rvm/gems/ruby-{{ item[1] }}/bin:${PATH}";'
+    state: present
+  with_nested:
+    - "{{ fubarhouse_ruby.shell_profiles }}"
+    - "{{ ruby_versions }}"
   ignore_errors: yes
 
 - name: "RVM | Ensuring updated..."

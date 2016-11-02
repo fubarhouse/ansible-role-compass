@@ -1,0 +1,55 @@
+---
+
+# Clean-up tasks for fubarhouse.ruby
+
+- name: "Ruby | Cleaning exports"
+  lineinfile:
+    dest: "{{ fubarhouse_ruby.user_dir }}/{{ item.filename }}"
+    regexp: "/.rvm/gems/ruby-{{ ruby_version }}/bin"
+    line: "export PATH=$PATH:{{ fubarhouse_ruby.user_dir }}/.rvm/gems/ruby-{{ ruby_version }}/bin"
+    state: absent
+  with_items: "{{ fubarhouse_ruby.shell_profiles }}"
+
+- name: "Ruby | Ensure shell profiles are not configured for all versions"
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
+  lineinfile:
+    dest: "{{ fubarhouse_ruby.user_dir }}/{{ item[0].filename }}"
+    regexp: '/.rvm/gems/ruby-{{ item[1] }}'
+    line: 'export PATH="{{ fubarhouse_ruby.user_dir }}/.rvm/gems/ruby-{{ item[1] }}/bin:${PATH}";'
+    state: absent
+  with_nested:
+    - "{{ fubarhouse_ruby.shell_profiles }}"
+    - "{{ ruby_versions }}"
+  ignore_errors: yes
+
+- name: "RVM | Ensure shell profiles are not configured for RVM"
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
+  lineinfile:
+    dest: "{{ fubarhouse_ruby.user_dir }}/{{ item[0].filename }}"
+    regexp: '.rvm/scripts/rvm'
+    line: 'source {{ fubarhouse_ruby.user_dir }}/.rvm/scripts/rvm;'
+    state: absent
+  with_items:
+    - "{{ fubarhouse_ruby.shell_profiles }}"
+  ignore_errors: yes
+
+- name: "RVM | Clean-up"
+  become: yes
+  become_user: "root"
+  file:
+    path: "{{ fubarhouse_ruby.rvm_install_dir }}"
+    state: absent
+
+- name: "RVM | Ensure shell profiles are not configured for default version"
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
+  lineinfile:
+    dest: "{{ fubarhouse_ruby.user_dir }}/{{ item.filename }}"
+    regexp: '/.rvm/gems/ruby-{{ ruby_version }}'
+    line: 'export PATH="{{ fubarhouse_ruby.user_dir }}/.rvm/gems/ruby-{{ ruby_version }}/bin:${PATH}";'
+    state: absent
+  with_items:
+    - "{{ fubarhouse_ruby.shell_profiles }}"
+  ignore_errors: yes

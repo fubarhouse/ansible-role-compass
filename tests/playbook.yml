@@ -3,9 +3,10 @@
 - hosts: localhost
   sudo: true
   vars:
-    ansible_ssh_user: travis
-    ruby_version: 2.3.0
-    ruby_versions: []
+#    ansible_ssh_user: travis
+    ruby_version: 2.3.1
+    ruby_versions:
+      - 2.2.5
     ruby_packages:
       - sass
   roles:

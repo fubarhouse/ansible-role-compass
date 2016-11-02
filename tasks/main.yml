@@ -4,18 +4,21 @@
 - name: "Define user variable for ssh use"
   set_fact:
     fubarhouse_user: "{{ ansible_ssh_user }}"
-  when: ansible_ssh_user is defined
+  when: ansible_ssh_user is defined and fubarhouse_user is undefined
 
 - name: "Define user variable for non-ssh use"
   set_fact:
     fubarhouse_user: "{{ ansible_user_id }}"
-  when: ansible_ssh_user is not defined
+  when: ansible_ssh_user is not defined and fubarhouse_user is undefined
 
 - name: "Define OS-specific variables"
   include_vars: "config-{{ ansible_os_family }}.yml"
   when: fubarhouse_ruby is not defined
 
 - include: "dependencies-{{ ansible_os_family}}.yml"
+
+- include: cleanup.yml
+  when: fubarhouse_ruby.clean_install == true
 
 - include: rvm.yml
   when: fubarhouse_ruby.install_rvm == true
