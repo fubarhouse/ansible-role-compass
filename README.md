@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/fubarhouse/ansible-role-ruby.svg?branch=master)](https://travis-ci.org/fubarhouse/ansible-role-ruby)
 
-Installs RVM, Ruby and Gems on RHEL/CentOS and Debian/Ubuntu servers.
+Installs RVM, Ruby and Gems on RHEL/CentOS, Debian/Ubuntu and MacOSX systems.
 
 ## Requirements
 

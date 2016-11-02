@@ -3,7 +3,7 @@ dependencies: []
 
 galaxy_info:
   author: fubarhouse
-  description: Provisions ruby core and optional gems
+  description: Provisions ruby core and optional gems using Ruby Version Manager (RVM).
   license: "license (BSD, MIT)"
   min_ansible_version: 1.9.2
   platforms:
@@ -13,6 +13,23 @@ galaxy_info:
   - name: Debian
     versions:
     - all
+  - name: MacOSX
+    versions:
+    - all
+    - 10.10
+    - 10.11
+    - 10.12
+    - 10.7
+    - 10.8
+    - 10.9
+  galaxy_tags:
+    - ruby
+    - rbenv
+    - rb
+    - vcs
+    - version
+    - control
+    - gem
   categories:
     - system
     - database
