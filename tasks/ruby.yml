@@ -12,7 +12,7 @@
   become: yes
   become_user: "{{ fubarhouse_user }}"
   shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} install {{ item }}"
-  with_items: [ruby_version, ruby_versions]
+  with_items: ["{{ ruby_version }}", "{{ ruby_versions }}"]
   when:
     - '"{{ item }}" not in installed_ruby_versions.stdout'
 
@@ -32,6 +32,7 @@
     ('"rvm alias create default <ruby>" in post_execute_ruby_versions')
   changed_when: false
 
+
 - name: "Ruby | Set default alias"
   become: yes
   become_user: "{{ fubarhouse_user }}"
@@ -44,12 +45,12 @@
 - name: "Ruby | Switching version"
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: "/bin/bash --login -c '{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} use {{ ruby_version }} --default'"
+  shell: "/bin/bash --login -c '{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec_alt }} use {{ ruby_version }} --default'"
   args:
     executable: /bin/bash
   register: switch_ver
   changed_when: '"Using {{ rvm_path}}/gems/ruby-{{ ruby_version }}" in switch_ver.stdout'
-  failed_when: '"RVM is not a function" in switch_ver.stdout'
+  failed_when: '"RVM is not a function" in switch_ver.stderr'
   when:  '"=* ruby-{{ ruby_version}}" not in post_execute_ruby_versions.stdout'
 
 - name: "Ruby | Import exports"
