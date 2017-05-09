@@ -15,7 +15,9 @@
   become_user: "{{ fubarhouse_user }}"
   command: gpg --list-keys 'RVM'
   register: search_gpg_keys
-  changed_when: '"(RVM signing)" not in search_gpg_keys.stdout'
+  changed_when: >
+    ('"(RVM signing)" not in search_gpg_keys.stdout') or
+    ('"gpg: error reading key: public key not found" in search_gpg_keys.stdout')
 
 - name: "RVM | Ensure GPG key is imported"
   raw: curl -sSL https://rvm.io/mpapis.asc | gpg2 --import -
