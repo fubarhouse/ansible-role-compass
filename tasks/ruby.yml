@@ -4,45 +4,76 @@
 - name: "Ruby | Check version"
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} list"
+  shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} list"
   register: installed_ruby_versions
+  changed_when: false
 
-- name: "Ruby | Install default version"
+- name: "Ruby | Install ruby"
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} install {{ ruby_version }}"
-  when: '"{{ ruby_version }}" not in "{{ ruby_versions }}" and "{{ ruby_version }}" not in "{{ installed_ruby_versions.stdout }}"'
-
-- name: "Ruby | Install all requested versions"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
-  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} install {{ item }}"
-  with_items: "{{ ruby_versions }}"
+  shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} install {{ item }}"
+  with_items:
+  - "{{ ruby_version }}"
+  - "{{ ruby_versions }}"
   when: '"{{ item }}" not in "{{ installed_ruby_versions.stdout }}"'
 
-- name: "Ruby | Symlinking"
-  become: yes
-  become_user: "root"
-  file:
-    src: "{{ fubarhouse_ruby.rvm_install_dir }}/rubies/ruby-{{ ruby_version }}/bin/ruby"
-    dest: "/usr/local/bin/ruby"
-    state: link
-    force: true
-
-- name: "Ruby | Configuring"
+- name: "Ruby | Generate new list of installed versions"
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} alias create default {{ ruby_version }}"
+  shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} list"
+  register: post_execute_ruby_versions
+  changed_when: false
 
-- name: "Ruby | Aliasing"
+- name: "Ruby | Remove default alias"
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} use {{ ruby_version }}"
+  shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} alias create default {{ ruby_version }}"
+  when: >
+    ('"* ruby-{{ ruby_version}}" not in post_execute_ruby_versions.stdout') or
+    ('"rvm alias create default <ruby>" in post_execute_ruby_versions')
+  changed_when: false
+
+- name: "Ruby | Set default alias"
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
+  shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} alias create default {{ ruby_version }}"
+  changed_when: false
+  when:  >
+    ('"* ruby-{{ ruby_version}}" not in post_execute_ruby_versions.stdout') or
+    ('"rvm alias create default <ruby>" in post_execute_ruby_versions')
+
+- name: "Ruby | Switching version"
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
+  shell: "/bin/bash --login -c '{{ rvm_exec }} use {{ ruby_version }} --default'"
+  args:
+    executable: /bin/bash
+  register: switch_ver
+  changed_when: '"Using {{ rvm_path}}/gems/ruby-{{ ruby_version }}" in switch_ver.stdout'
+  failed_when: '"RVM is not a function" in switch_ver.stdout'
+  when:  '"=* ruby-{{ ruby_version}}" not in post_execute_ruby_versions.stdout'
 
 - name: "Ruby | Import exports"
   lineinfile:
-    dest: "{{ fubarhouse_ruby.user_dir }}/{{ item.filename }}"
+    dest: "{{ item.item }}"
     regexp: "/.rvm/gems/ruby-{{ ruby_version }}/bin"
-    line: "export PATH=$PATH:{{ fubarhouse_ruby.user_dir }}/.rvm/gems/ruby-{{ ruby_version }}/bin"
+    line: "export PATH=$PATH:{{ fubarhouse_user_dir }}/.rvm/gems/ruby-{{ ruby_version }}/bin"
     state: present
-  with_items: "{{ fubarhouse_ruby.shell_profiles }}"
+  with_items: "{{ rvm_stat_shell_profiles.results }}"
+  when: item.stat.exists|bool == true
+
+- name: "Ruby | Verify RVM configuration"
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
+  shell: "{{ rvm_exec }} list"
+  register: verify_ruby_versions
+  changed_when: false
+  failed_when: '"=* ruby-{{ ruby_version }}" not in verify_ruby_versions.stdout'
+
+- name: "Ruby | Verify Ruby version"
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
+  shell: "/bin/bash --login -c 'ruby -v'"
+  register: verify_default_ruby_versions
+  changed_when: false
+  failed_when: '"ruby {{ ruby_version }}" not in verify_default_ruby_versions.stdout'

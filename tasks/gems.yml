@@ -1,5 +1,4 @@
 ---
-# file: tasks/gems-RedHat.yml
 
 - name: "Gems | Ensure installed and updated"
   become: yes

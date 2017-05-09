@@ -5,80 +5,52 @@
   become: yes
   become_user: "{{ fubarhouse_user }}"
   stat:
-    path: "{{ fubarhouse_ruby.rvm_install_dir }}"
+    path: "{{ rvm_install_dir }}"
   register: fubarhouse_ruby_rvm_installed
   # ignore_errors: yes
   no_log: yes
 
-- name: "RVM | Include OS-specific tasks for GPG"
-  include: "tasks-{{ ansible_os_family }}.yml"
+- name: "RVM | Searching imported keys"
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
+  command: gpg --list-keys 'RVM'
+  register: search_gpg_keys
+  changed_when: '"(RVM signing)" not in search_gpg_keys.stdout'
+
+- name: "RVM | Ensure GPG key is imported"
+  raw: curl -sSL https://rvm.io/mpapis.asc | gpg2 --import -
+  register: gpg_import_command
+  changed_when: '"imported: 1" in gpg_import_command.stdout'
+  when: '"(RVM signing)" not in search_gpg_keys.stdout'
 
 - name: "RVM | Clone/Update"
   become: yes
   become_user: "{{ fubarhouse_user }}"
   git:
-    repo: "{{ fubarhouse_ruby.rvm_repo}}"
-    dest: "{{ fubarhouse_ruby.rvm_install_dir }}"
+    repo: "{{ rvm_repo}}"
+    dest: "{{ rvm_install_dir }}"
     clone: yes
-    update: yes
-    force: yes
+    update: no
+    force: no
     version: master
     recursive: false
 
 - name: "RVM | Install"
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_install_path }}/{{ fubarhouse_ruby.rvm_install_exec }}"
+  shell: "{{ rvm_install_dir }}/{{ rvm_install_path }}/{{ rvm_install_exec }}"
   when: "{{ fubarhouse_ruby_rvm_installed.stat.exists }} == false"
-
-- name: RVM | Ensure shell profiles are available
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
-  file:
-    path: "{{ fubarhouse_ruby.user_dir }}/{{ item.filename }}"
-    state: touch
-  with_items: "{{ fubarhouse_ruby.shell_profiles }}"
-  ignore_errors: yes
-
-- name: "RVM | Configure"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
-  lineinfile:
-      dest: "{{ fubarhouse_ruby.user_dir }}/{{ item.filename }}"
-      state: present
-      regexp: 'source {{ fubarhouse_ruby.rvm_install_dir }}/scripts/rvm;'
-      line: 'source {{ fubarhouse_ruby.rvm_install_dir }}/scripts/rvm;'
-  when: "{{ fubarhouse_ruby_rvm_installed.stat.exists }} == false"
-  with_items: "{{ fubarhouse_ruby.shell_profiles }}"
-  ignore_errors: yes
-
-- name: RVM | Ensure shell profiles are configured for default version
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
-  lineinfile:
-    dest: "{{ fubarhouse_ruby.user_dir }}/{{ item.filename }}"
-    regexp: '/.rvm/gems/ruby-{{ ruby_version }}'
-    line: 'export PATH="{{ fubarhouse_ruby.user_dir }}/.rvm/gems/ruby-{{ ruby_version }}/bin:${PATH}";'
-    state: present
-  with_items:
-    - "{{ fubarhouse_ruby.shell_profiles }}"
-  ignore_errors: yes
-
-- name: RVM | Ensure shell profiles are configured for all versions
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
-  lineinfile:
-    dest: "{{ fubarhouse_ruby.user_dir }}/{{ item[0].filename }}"
-    regexp: '/.rvm/gems/ruby-{{ item[1] }}'
-    line: 'export PATH="{{ fubarhouse_ruby.user_dir }}/.rvm/gems/ruby-{{ item[1] }}/bin:${PATH}";'
-    state: present
-  with_nested:
-    - "{{ fubarhouse_ruby.shell_profiles }}"
-    - "{{ ruby_versions }}"
-  ignore_errors: yes
 
 - name: "RVM | Ensuring updated..."
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: "{{ fubarhouse_ruby.rvm_install_dir }}/{{ fubarhouse_ruby.rvm_path }}/{{ fubarhouse_ruby.rvm_exec }} get stable"
-  when: fubarhouse_ruby.rvm_updater
+  shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} get stable --auto-dotfiles"
+  changed_when: false
+
+- name: "RVM | Reloading"
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
+  shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} reload"
+  register: rvm_reload
+  changed_when: false
+  failed_when: '"RVM reloaded!" not in rvm_reload.stdout'
