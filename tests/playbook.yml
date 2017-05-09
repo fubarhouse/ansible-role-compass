@@ -42,6 +42,8 @@
     with_items:
     - git
     - git-svn
+    - gpg
+    - gnupg2
     - rsync
     - openssh-server
     - openssh-client
