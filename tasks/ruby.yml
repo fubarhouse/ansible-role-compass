@@ -12,10 +12,9 @@
   become: yes
   become_user: "{{ fubarhouse_user }}"
   shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} install {{ item }}"
-  with_items:
-  - "{{ ruby_version }}"
-  - "{{ ruby_versions }}"
-  when: '"{{ item }}" not in "{{ installed_ruby_versions.stdout }}"'
+  with_items: [ruby_version, ruby_versions]
+  when:
+    - '"{{ item }}" not in "{{ installed_ruby_versions.stdout }}"'
 
 - name: "Ruby | Generate new list of installed versions"
   become: yes
