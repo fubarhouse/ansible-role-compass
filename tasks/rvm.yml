@@ -18,6 +18,7 @@
   changed_when: >
     ('"(RVM signing)" not in search_gpg_keys.stdout') or
     ('"gpg: error reading key: public key not found" in search_gpg_keys.stdout')
+  failed_when: false
 
 - name: "RVM | Ensure GPG key is imported"
   raw: curl -sSL https://rvm.io/mpapis.asc | gpg2 --import -
