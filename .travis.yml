@@ -11,26 +11,26 @@ env:
     init: /sbin/init
     run_opts: "--privileged"
     playbook: playbook.yml
-  - distro: ubuntu1404
-    init: /sbin/init
-    run_opts: "--privileged"
-    playbook: playbook.yml
-  - distro: ubuntu1204
-    init: /sbin/init
-    run_opts: "--privileged"
-    playbook: playbook.yml
-  - distro: centos6
-    init: "/sbin/init"
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    playbook: playbook.yml
-  - distro: centos7
-    init: /usr/lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    playbook: playbook.yml
-  - distro: debian8
-    init: /lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    playbook: test.yml
+#  - distro: ubuntu1404
+#    init: /sbin/init
+#    run_opts: "--privileged"
+#    playbook: playbook.yml
+#  - distro: ubuntu1204
+#    init: /sbin/init
+#    run_opts: "--privileged"
+#    playbook: playbook.yml
+#  - distro: centos6
+#    init: "/sbin/init"
+#    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+#    playbook: playbook.yml
+#  - distro: centos7
+#    init: /usr/lib/systemd/systemd
+#    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+#    playbook: playbook.yml
+#  - distro: debian8
+#    init: /lib/systemd/systemd
+#    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+#    playbook: test.yml
   # - distro: fedora24
   #   init: /usr/lib/systemd/systemd
   #   run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
@@ -41,26 +41,26 @@ env:
     init: /sbin/init
     run_opts: "--privileged"
     playbook: playbook-idempotence.yml
-  - distro: ubuntu1404
-    init: /sbin/init
-    run_opts: "--privileged"
-    playbook: playbook-idempotence.yml
-  - distro: ubuntu1204
-    init: /sbin/init
-    run_opts: "--privileged"
-    playbook: playbook-idempotence.yml
-  - distro: centos6
-    init: "/sbin/init"
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    playbook: playbook-idempotence.yml
-  - distro: centos7
-    init: /usr/lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    playbook: playbook-idempotence.yml
-  - distro: debian8
-    init: /lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    playbook: playbook-idempotence.yml
+#  - distro: ubuntu1404
+#    init: /sbin/init
+#    run_opts: "--privileged"
+#    playbook: playbook-idempotence.yml
+#  - distro: ubuntu1204
+#    init: /sbin/init
+#    run_opts: "--privileged"
+#    playbook: playbook-idempotence.yml
+#  - distro: centos6
+#    init: "/sbin/init"
+#    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+#    playbook: playbook-idempotence.yml
+#  - distro: centos7
+#    init: /usr/lib/systemd/systemd
+#    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+#    playbook: playbook-idempotence.yml
+#  - distro: debian8
+#    init: /lib/systemd/systemd
+#    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+#    playbook: playbook-idempotence.yml
   # - distro: fedora24
   #   init: /usr/lib/systemd/systemd
   #   run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
