@@ -14,10 +14,16 @@
     - "{{ rvm_stat_shell_profiles.results }}"
   ignore_errors: yes
 
+- name: "RVM | Checking for RVM"
+  stat:
+    path: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }}"
+  register: preinstall_rvm_check
+
 - name: "RVM | Resetting Ruby"
   become: yes
   become_user: "{{ fubarhouse_user }}"
   shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} reset"
+  when: preinstall_rvm_check.stat.exists|bool == true
 
 - name: "RVM | Clean-up"
   become: yes
