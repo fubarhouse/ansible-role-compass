@@ -9,6 +9,7 @@ ruby_packages:
   - sass
   - compass
 
+secure_rvm_install: true
 clean_rvm_install: false
 install_rvm: true
 install_ruby: true

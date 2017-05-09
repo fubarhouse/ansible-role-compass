@@ -19,12 +19,15 @@
     ('"(RVM signing)" not in search_gpg_keys.stdout') or
     ('"gpg: error reading key: public key not found" in search_gpg_keys.stdout')
   failed_when: false
+  when: secure_rvm_install|bool == false
 
 - name: "RVM | Ensure GPG key is imported"
   raw: curl -sSL https://rvm.io/mpapis.asc | gpg2 --import -
   register: gpg_import_command
   changed_when: '"imported: 1" in gpg_import_command.stdout'
-  when: '"(RVM signing)" not in search_gpg_keys.stdout'
+  when: >
+    ('"(RVM signing)" not in search_gpg_keys.stdout') and
+    (secure_rvm_install|bool == false)
 
 - name: "RVM | Clone/Update"
   become: yes
@@ -49,6 +52,7 @@
   become_user: "{{ fubarhouse_user }}"
   shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} get stable --auto-dotfiles"
   changed_when: false
+  when: secure_rvm_install|bool == false
 
 - name: "RVM | Reloading"
   become: yes

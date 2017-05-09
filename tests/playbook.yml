@@ -14,6 +14,7 @@
       - 2.4.0
     ruby_packages:
       - sass
+    secure_rvm_install: false
   pre_tasks:
   - file:
       path: /home/travis/temp
