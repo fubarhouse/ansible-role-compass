@@ -17,7 +17,7 @@
 - name: "RVM | Resetting Ruby"
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: "{{ rvm_exec }} reset"
+  shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} reset"
 
 - name: "RVM | Clean-up"
   become: yes

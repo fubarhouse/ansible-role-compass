@@ -24,6 +24,16 @@
     fubarhouse_user_dir: "{{ shell_home_dir.stdout }}"
   when: fubarhouse_user_dir is not defined
 
+- name: "Set default profile"
+  set_fact:
+    shell_profiles: ["{{ fubarhouse_user_dir }}/.profile"]
+  when: shell_profiles is not defined
+
+- name: "Set default RVM installation directory"
+  set_fact:
+    rvm_install_dir: ["{{ fubarhouse_user_dir }} }}/.rvm"]
+  when: rvm_install_dir is not defined
+
 - name: "Perform stat on configured shell profiles"
   stat:
     path: "{{ item }}"
