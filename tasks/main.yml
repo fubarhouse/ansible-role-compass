@@ -31,7 +31,7 @@
 
 - name: "Set default RVM installation directory"
   set_fact:
-    rvm_install_dir: ["{{ fubarhouse_user_dir }} }}/.rvm"]
+    rvm_install_dir: ["{{ fubarhouse_user_dir }}/.rvm"]
   when: rvm_install_dir is not defined
 
 - name: "Perform stat on configured shell profiles"
