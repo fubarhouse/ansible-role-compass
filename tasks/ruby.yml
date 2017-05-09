@@ -45,7 +45,7 @@
 - name: "Ruby | Switching version"
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: "/bin/bash --login -c '{{ rvm_exec }} use {{ ruby_version }} --default'"
+  shell: "/bin/bash --login -c '{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} use {{ ruby_version }} --default'"
   args:
     executable: /bin/bash
   register: switch_ver
@@ -57,7 +57,7 @@
   lineinfile:
     dest: "{{ item.item }}"
     regexp: "/.rvm/gems/ruby-{{ ruby_version }}/bin"
-    line: "export PATH=$PATH:{{ fubarhouse_user_dir }}/.rvm/gems/ruby-{{ ruby_version }}/bin"
+    line: "export PATH=$PATH:{{ rvm_install_dir }}/{{ rvm_path }}//gems/ruby-{{ ruby_version }}/bin"
     state: present
   with_items: "{{ rvm_stat_shell_profiles.results }}"
   when: item.stat.exists|bool == true
@@ -65,7 +65,7 @@
 - name: "Ruby | Verify RVM configuration"
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: "{{ rvm_exec }} list"
+  shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} list"
   register: verify_ruby_versions
   changed_when: false
   failed_when: '"=* ruby-{{ ruby_version }}" not in verify_ruby_versions.stdout'
