@@ -39,7 +39,7 @@ env:
 before_install:
 
   # For this role, we require a shell profile to be available...
-  - touch /home/travis/.profile
+  # - touch /home/travis/.profile
 
   # Pull container.
   - 'docker pull geerlingguy/docker-${distro}-ansible:latest'
