@@ -6,18 +6,18 @@ Installs RVM, Ruby and Gems on RHEL/CentOS, Debian/Ubuntu and MacOSX systems.
 
 ## Requirements
 
-  * GPG
+None.
 
 ## Role Variables
 
 Default Ruby version
 ````
-ruby_version: 2.3.0
+ruby_version: 2.4.0
 ````
 All other Ruby versions to install
 ````
 ruby_versions:
-  - 2.3.0
+  - 2.4.0
 ````
 Ruby packages to download
 ````
@@ -25,6 +25,24 @@ ruby_packages:
   - bundler
   - sass
   - compass
+````
+You can flag installations as insecure by falsifying:
+````
+secure_rvm_install: true
+````
+To change the autolibs flag:
+````
+rvm_autolibs_mode: enable
+````
+To remove everything before starting (fresh installation):
+````
+clean_rvm_install: false
+````
+To enable/disable tasks of a certain category
+````
+install_rvm: true
+install_ruby: true
+install_gems: true
 ````
 ## Dependencies
 
@@ -36,7 +54,7 @@ ruby_packages:
 - hosts: localhost
   sudo: true
   vars:
-  ruby_version: 2.3.0
+  ruby_version: 2.4.0
   ruby_packages:
     - sass
   roles:
