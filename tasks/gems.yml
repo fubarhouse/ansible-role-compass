@@ -2,8 +2,7 @@
 
 - name: "Gems | Ensure installed and updated"
   become: yes
-  become_user: "root"
-#  become_user: "{{ fubarhouse_user }}"
+  become_user: "{{ fubarhouse_user }}"
   gem:
     name: "{{ item }}"
     state: latest
