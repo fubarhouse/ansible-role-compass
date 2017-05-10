@@ -11,35 +11,32 @@ env:
     init: /sbin/init
     run_opts: "--privileged"
     playbook: playbook.yml
-#  - distro: ubuntu1404
-#    init: /sbin/init
-#    run_opts: "--privileged"
-#    playbook: playbook.yml
-#  - distro: ubuntu1204
-#    init: /sbin/init
-#    run_opts: "--privileged"
-#    playbook: playbook.yml
-#  - distro: centos6
-#    init: "/sbin/init"
-#    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-#    playbook: playbook.yml
-#  - distro: centos7
-#    init: /usr/lib/systemd/systemd
-#    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-#    playbook: playbook.yml
-#  - distro: debian8
-#    init: /lib/systemd/systemd
-#    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-#    playbook: test.yml
+  - distro: ubuntu1404
+    init: /sbin/init
+    run_opts: "--privileged"
+    playbook: playbook.yml
+  - distro: ubuntu1204
+    init: /sbin/init
+    run_opts: "--privileged"
+    playbook: playbook.yml
+  - distro: centos6
+    init: "/sbin/init"
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    playbook: playbook.yml
+  - distro: centos7
+    init: /usr/lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    playbook: playbook.yml
+  - distro: debian8
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    playbook: test.yml
   # - distro: fedora24
   #   init: /usr/lib/systemd/systemd
   #   run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
   #   playbook: playbook.yml
 
 before_install:
-
-  # For this role, we require a shell profile to be available...
-  # - touch /home/travis/.profile
 
   # Pull container.
   - 'docker pull geerlingguy/docker-${distro}-ansible:latest'
