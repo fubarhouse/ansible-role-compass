@@ -73,6 +73,29 @@
     - gcc
     - ruby-full
     - ruby
+    - libyaml-devel
+    - lib64yaml-devel
+    - libffi-devel
+    - bash
+    - curl
+    - patch
+    - javac
+    - java-1.7.0-openjdk-devel
+    - java-devel
+    - java
+    - gcc-c++
+    - glibc-devel
+    - patch
+    - readline
+    - readline-devel
+    - zlib
+    - zlib-devel
+    - libffi-devel
+    - bzip2
+    - automake
+    - libtool
+    - bison
+    - sqlite-devel
     failed_when: false
   - name: add travis
     user:
