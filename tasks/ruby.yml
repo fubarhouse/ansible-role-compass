@@ -60,6 +60,7 @@
     line: "export PATH=$PATH:{{ rvm_install_dir }}/{{ rvm_path }}//gems/ruby-{{ ruby_version }}/bin"
     state: present
   with_items: "{{ rvm_stat_shell_profiles.results }}"
+  changed_when: false
   when: item.stat.exists|bool == true
 
 - name: "Ruby | Verify RVM configuration"
