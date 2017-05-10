@@ -56,7 +56,7 @@
 - name: "Ruby | Import exports"
   lineinfile:
     dest: "{{ item.item }}"
-    regexp: "/.rvm/gems/ruby-{{ ruby_version }}/bin"
+    regexp: "gems/ruby-{{ ruby_version }}/bin"
     line: "export PATH=$PATH:{{ rvm_install_dir }}/{{ rvm_path }}//gems/ruby-{{ ruby_version }}/bin"
     state: present
   with_items: "{{ rvm_stat_shell_profiles.results }}"

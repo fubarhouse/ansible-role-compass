@@ -62,7 +62,7 @@
   changed_when: false
   failed_when: '"RVM reloaded!" not in rvm_reload.stdout'
 
-- name: "RVM | Reloading"
+- name: "RVM | Configure autolibs"
   become: yes
   become_user: "{{ fubarhouse_user }}"
   shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} autolibs {{ rvm_autolibs_mode }}"
