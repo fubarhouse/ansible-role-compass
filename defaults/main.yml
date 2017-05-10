@@ -14,6 +14,7 @@ clean_rvm_install: false
 install_rvm: true
 install_ruby: true
 install_gems: true
+rvm_autolibs_mode: enable
 rvm_repo: "https://github.com/rvm/rvm.git"
 rvm_install_path: "binscripts"
 rvm_path: "bin"
