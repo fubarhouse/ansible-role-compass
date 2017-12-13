@@ -1,6 +1,8 @@
 # Ansible Role: Ruby
 
 [![Build Status](https://travis-ci.org/fubarhouse/ansible-role-ruby.svg?branch=master)](https://travis-ci.org/fubarhouse/ansible-role-ruby)
+[![Ansible Galaxy](https://img.shields.io/ansible/role/4920.svg)](https://galaxy.ansible.com/fubarhouse/ruby)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/fubarhouse/ansible-role-ruby/master/LICENSE)
 
 Installs RVM, Ruby and Gems on RHEL/CentOS, Debian/Ubuntu and MacOSX systems.
 
