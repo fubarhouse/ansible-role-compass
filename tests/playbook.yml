@@ -76,6 +76,7 @@
     - libyaml-devel
     - lib64yaml-devel
     - libffi-devel
+    - procps
     - bash
     - curl
     - patch
