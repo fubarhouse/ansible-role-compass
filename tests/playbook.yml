@@ -5,9 +5,6 @@
   vars:
     fubarhouse_user: travis
     fubarhouse_user_dir: /home/travis
-    git_install_from_source: true
-    git_install_from_source_force_update: false
-    git_version: 2.9.3
     clean_rvm_install: false
     rvm_autolibs_mode: disable
     ruby_version: 2.4.0
