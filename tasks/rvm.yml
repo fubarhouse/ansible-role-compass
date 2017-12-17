@@ -7,7 +7,7 @@
   stat:
     path: "{{ rvm_install_dir }}"
   register: fubarhouse_ruby_rvm_installed
-  # ignore_errors: yes
+  failed_when: false
   no_log: yes
 
 - name: "RVM | Searching imported keys"
