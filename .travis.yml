@@ -114,9 +114,6 @@ before_install:
 
 script:
 
-  # Travis does come with RVM - let's delete it!
-  - rm -rf /home/travis/.rvm
-
   - container_id=$(mktemp)
   # Run container in detached state.
   - 'docker run --detach --volume="${PWD}":/etc/ansible/roles/role_under_test:ro ${run_opts} ${docker_user}/docker-${distro}-ansible:latest "${init}" > "${container_id}"'
