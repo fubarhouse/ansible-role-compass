@@ -59,7 +59,7 @@
     failed_when: false
     when: 'ansible_os_family == "Debian"'
 
-  - name: Install dependencies (RedHat)
+- name: Install dependencies (RedHat)
     become: yes
     become_user: root
     package:
