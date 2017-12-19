@@ -3,8 +3,6 @@
 - hosts: all
   sudo: true
   vars:
-    fubarhouse_user: travis
-    fubarhouse_user_dir: /home/travis
     clean_rvm_install: false
     rvm_autolibs_mode: disable
     ruby_version: 2.4.0
