@@ -2,30 +2,22 @@
 # file: tasks/ruby.yml
 
 - name: "Ruby | Check version"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
   shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} list"
   register: installed_ruby_versions
   changed_when: false
 
 - name: "Ruby | Install ruby"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
   shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} install {{ item }}"
   with_items: ["{{ ruby_version }}", "{{ ruby_versions }}"]
   when:
     - '"{{ item }}" not in installed_ruby_versions.stdout'
 
 - name: "Ruby | Generate new list of installed versions"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
   shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} list"
   register: post_execute_ruby_versions
   changed_when: false
 
 - name: "Ruby | Remove default alias"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
   shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} alias create default {{ ruby_version }}"
   when: >
     ('"* ruby-{{ ruby_version}}" not in post_execute_ruby_versions.stdout') or
@@ -34,8 +26,6 @@
 
 
 - name: "Ruby | Set default alias"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
   shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} alias create default {{ ruby_version }}"
   changed_when: false
   when:  >
@@ -43,8 +33,6 @@
     ('"rvm alias create default <ruby>" in post_execute_ruby_versions')
 
 - name: "Ruby | Switching version"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
   shell: "/bin/bash --login -c '{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec_alt }} use {{ ruby_version }} --default'"
   args:
     executable: /bin/bash
@@ -64,16 +52,12 @@
   when: item.stat.exists|bool == true
 
 - name: "Ruby | Verify RVM configuration"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
   shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} list"
   register: verify_ruby_versions
   changed_when: false
   failed_when: '"=* ruby-{{ ruby_version }}" not in verify_ruby_versions.stdout'
 
 - name: "Ruby | Verify Ruby version"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
   shell: "/bin/bash --login -c 'ruby -v'"
   register: verify_default_ruby_versions
   changed_when: false

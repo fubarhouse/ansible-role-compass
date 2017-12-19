@@ -33,8 +33,6 @@
     when: ansible_os_family == 'Debian'
     failed_when: false
   - name: Install dependencies
-    become: yes
-    become_user: root
     package:
       name: "{{ item }}"
       state: latest

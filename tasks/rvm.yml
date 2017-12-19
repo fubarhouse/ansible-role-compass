@@ -2,8 +2,6 @@
 # file: tasks/nvm.yml
 
 - name: "RVM | Check"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
   stat:
     path: "{{ rvm_install_dir }}"
   register: fubarhouse_ruby_rvm_installed
@@ -11,8 +9,6 @@
   no_log: yes
 
 - name: "RVM | Searching imported keys"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
   command: gpg --list-keys 'RVM'
   register: search_gpg_keys
   changed_when: >
@@ -30,8 +26,6 @@
     (secure_rvm_install|bool == true)
 
 - name: "RVM | Clone/Update"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
   git:
     repo: "{{ rvm_repo}}"
     dest: "{{ rvm_install_dir }}"
@@ -42,29 +36,21 @@
     recursive: false
 
 - name: "RVM | Install"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
   shell: "{{ rvm_install_dir }}/{{ rvm_install_path }}/{{ rvm_install_exec }}"
   when: "{{ fubarhouse_ruby_rvm_installed.stat.exists }} == false"
 
 - name: "RVM | Ensuring updated..."
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
   shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} get stable --auto-dotfiles"
   changed_when: false
   when: secure_rvm_install|bool == true
 
 - name: "RVM | Reloading"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
   shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} reload"
   register: rvm_reload
   changed_when: false
   failed_when: '"RVM reloaded!" not in rvm_reload.stdout'
 
 - name: "RVM | Configure autolibs"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
   shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} autolibs {{ rvm_autolibs_mode }}"
   changed_when: false
   failed_when: false

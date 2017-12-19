@@ -3,8 +3,6 @@
 # Clean-up tasks for fubarhouse.ruby
 
 - name: "RVM | Ensure shell profiles are not configured for RVM"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
   lineinfile:
     dest: "{{ fubarhouse_user_dir }}/{{ item.item }}"
     regexp: '/scripts/rvm'
@@ -20,14 +18,10 @@
   register: preinstall_rvm_check
 
 - name: "RVM | Resetting Ruby"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
   shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} reset"
   when: preinstall_rvm_check.stat.exists|bool == true
 
 - name: "RVM | Clean-up"
-  become: yes
-  become_user: "root"
   file:
     path: "{{ rvm_install_dir }}"
     state: absent
