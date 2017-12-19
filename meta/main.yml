@@ -1,36 +1,32 @@
 ---
-dependencies: []
 
 galaxy_info:
   author: fubarhouse
-  description: Provisions ruby core and optional gems using Ruby Version Manager (RVM).
+  description: Install Ruby Version Manager (RMV), Ruby cores and gems..
   license: "license (BSD, MIT)"
   min_ansible_version: 1.9.2
   platforms:
-  - name: Ubuntu
-    versions:
-    - all
-  - name: Debian
-    versions:
-    - all
   - name: MacOSX
     versions:
     - all
-    - 10.10
-    - 10.11
-    - 10.12
-    - 10.7
-    - 10.8
-    - 10.9
+  - name: Ubuntu
+    versions:
+    - trusty
+    - xenial
+    - precise
+  - name: EL
+    versions:
+    - 6
+    - 7
+  - name: Debian
+    versions:
+    - jessie
   galaxy_tags:
-    - ruby
-    - rbenv
-    - rb
-    - vcs
-    - version
-    - control
-    - gem
-  categories:
-    - system
-    - database
-    - development
+  - ruby
+  - rvm
+  - development
+  - programming
+  - language
+  - compiler
+  - manager
+dependencies: []

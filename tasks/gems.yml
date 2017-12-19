@@ -1,5 +1,4 @@
 ---
-# file: tasks/gems-RedHat.yml
 
 - name: "Gems | Ensure installed and updated"
   become: yes
@@ -7,6 +6,6 @@
   gem:
     name: "{{ item }}"
     state: latest
-    executable: "{{ fubarhouse_ruby.user_dir }}/.rvm/rubies/ruby-{{ ruby_version }}/bin/gem"
+    executable: "{{ fubarhouse_user_dir }}/.rvm/rubies/ruby-{{ ruby_version }}/bin/gem"
     user_install: no
   with_items: "{{ ruby_packages }}"

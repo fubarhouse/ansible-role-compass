@@ -4,28 +4,51 @@
 - name: "Define user variable for ssh use"
   set_fact:
     fubarhouse_user: "{{ ansible_ssh_user }}"
-  when: ansible_ssh_user is defined and fubarhouse_user is undefined
+  when: ansible_ssh_user is defined and fubarhouse_user is not defined
 
 - name: "Define user variable for non-ssh use"
   set_fact:
     fubarhouse_user: "{{ ansible_user_id }}"
-  when: ansible_ssh_user is not defined and fubarhouse_user is undefined
+  when: ansible_ssh_user is not defined and fubarhouse_user is not defined
 
-- name: "Define OS-specific variables"
-  include_vars: "config-{{ ansible_os_family }}.yml"
-  when: fubarhouse_ruby is not defined
+- name: "Get $HOME"
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
+  shell: "echo $HOME"
+  register: shell_home_dir
+  changed_when: false
+  when: fubarhouse_user_dir is not defined
 
-- include: "dependencies-{{ ansible_os_family}}.yml"
+- name: "Set $HOME"
+  set_fact:
+    fubarhouse_user_dir: "{{ shell_home_dir.stdout }}"
+  when: fubarhouse_user_dir is not defined
 
-- include: cleanup.yml
-  when: fubarhouse_ruby.clean_install == true
+- name: "Set default profile"
+  set_fact:
+    shell_profiles: ["{{ fubarhouse_user_dir }}/.profile"]
+  when: shell_profiles is not defined
 
-- include: rvm.yml
-  when: fubarhouse_ruby.install_rvm == true
+- name: "Set default RVM installation directory"
+  set_fact:
+    rvm_install_dir: "{{ fubarhouse_user_dir }}/.rvm"
+  when: rvm_install_dir is not defined
 
-- include: ruby.yml
-  when: fubarhouse_ruby.install_ruby
+- name: "Perform stat on configured shell profiles"
+  stat:
+    path: "{{ item }}"
+  with_items: "{{ shell_profiles }}"
+  register: rvm_stat_shell_profiles
+  when: rvm_stat_shell_profiles is not defined
 
-- include: Include OS-specific gem tasks.
-  include: "gems-{{ ansible_os_family }}.yml"
-  when: fubarhouse_ruby.install_gems == true
+- include: "cleanup.yml"
+  when: clean_rvm_install|bool == true
+
+- include: "rvm.yml"
+  when: install_rvm|bool == true
+
+- include: "ruby.yml"
+  when: install_ruby|bool == true
+
+- include: "gems.yml"
+  when: install_gems|bool == true

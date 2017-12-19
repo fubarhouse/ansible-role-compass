@@ -1,9 +1,0 @@
----
-
-- name: "RVM | Ensure key is present"
-  become: yes
-  become_user: "root"
-  apt_key:
-    keyserver: "{{ fubarhouse_ruby.rvm_key_keyserver }}"
-    id: "{{ fubarhouse_ruby.rvm_key_id }}"
-    state: present

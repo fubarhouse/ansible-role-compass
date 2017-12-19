@@ -1,0 +1,10 @@
+---
+
+- hosts: localhost
+  vars:
+    ruby_version: 2.4.0
+    ruby_versions:
+      - 2.4.0
+    ruby_packages: []
+  roles:
+  - ../ansible-role-ruby

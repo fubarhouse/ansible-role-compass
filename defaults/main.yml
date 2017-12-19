@@ -1,10 +1,25 @@
 ---
 
-ruby_version: 2.3.0
+ruby_version: 2.4.0
 ruby_versions:
-  - 2.3.0
+  - 2.4.0
 
 ruby_packages:
   - bundler
   - sass
   - compass
+
+secure_rvm_install: true
+clean_rvm_install: false
+install_rvm: true
+install_ruby: true
+install_gems: true
+rvm_autolibs_mode: enable
+rvm_repo: "https://github.com/rvm/rvm.git"
+rvm_install_path: "binscripts"
+rvm_path: "bin"
+gem_path: "rubies/ruby-{{ ruby_version }}/bin"
+rvm_exec: "rvm"
+rvm_exec_alt: "rvm-exec"
+rvm_install_exec: "rvm-installer"
+gem_exec: "gem"
