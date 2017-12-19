@@ -1,7 +1,8 @@
 ---
 
 - hosts: all
-  sudo: true
+  become: true
+  become_user: travis
   vars:
     clean_rvm_install: false
     rvm_autolibs_mode: disable
