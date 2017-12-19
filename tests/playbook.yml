@@ -2,7 +2,7 @@
 
 - hosts: all
   become: true
-  become_user: travis
+  become_user: root
   vars:
     clean_rvm_install: false
     rvm_autolibs_mode: disable
