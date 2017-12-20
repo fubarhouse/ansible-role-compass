@@ -10,6 +10,8 @@
     ruby_packages: []
       # - sass
     secure_rvm_install: false
+    install_ruby: false
+    install_gems: false
   pre_tasks:
   - file:
       path: /tmp
