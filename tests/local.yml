@@ -1,6 +1,6 @@
 ---
 
-- hosts: all
+- hosts: localhost
   vars:
     clean_rvm_install: false
     rvm_autolibs_mode: disable
@@ -109,4 +109,4 @@
     when: ansible_os_family == 'Debian'
     failed_when: false
   roles:
-    - role_under_test
+    - ../../ansible-role-ruby
