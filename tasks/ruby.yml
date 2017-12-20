@@ -7,7 +7,7 @@
   changed_when: false
 
 - name: "Ruby | Install ruby"
-  shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} install {{ item }}"
+  shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} install {{ item }} --autolibs=read-only"
   with_items: ["{{ ruby_version }}", "{{ ruby_versions }}"]
   when:
     - '"{{ item }}" not in installed_ruby_versions.stdout'
