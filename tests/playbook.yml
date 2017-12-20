@@ -12,7 +12,7 @@
     secure_rvm_install: false
   pre_tasks:
   - file:
-      path: /home/travis/temp
+      path: /tmp
       state: directory
       mode: 0777
   - name: Update yum cache.
@@ -109,4 +109,4 @@
     when: ansible_os_family == 'Debian'
     failed_when: false
   roles:
-    - role_under_test
+    - ../../ansible-role-ruby
