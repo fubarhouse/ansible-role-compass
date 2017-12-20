@@ -4,9 +4,9 @@
   vars:
     clean_rvm_install: false
     rvm_autolibs_mode: disable
-    ruby_version: 2.4.0
+    ruby_version: 2.0.0
     ruby_versions:
-      - 2.4.0
+      - 2.0.0
     ruby_packages: []
       # - sass
     secure_rvm_install: false
