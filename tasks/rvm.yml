@@ -37,7 +37,7 @@
 
 - name: "RVM | Install"
   shell: "{{ rvm_install_dir }}/{{ rvm_install_path }}/{{ rvm_install_exec }}"
-  when: "{{ fubarhouse_ruby_rvm_installed.stat.exists }} == false"
+  when: fubarhouse_ruby_rvm_installed.stat.exists|bool == false
 
 - name: "RVM | Ensuring updated..."
   shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} get stable --auto-dotfiles"
