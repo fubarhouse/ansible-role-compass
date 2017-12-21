@@ -4,23 +4,36 @@ galaxy_info:
   author: fubarhouse
   description: Install Ruby Version Manager (RMV), Ruby cores and gems..
   license: "license (BSD, MIT)"
-  min_ansible_version: 1.9.2
+  min_ansible_version: 2.4.0
   platforms:
-  - name: MacOSX
-    versions:
-    - all
-  - name: Ubuntu
-    versions:
-    - trusty
-    - xenial
-    - precise
-  - name: EL
-    versions:
-    - 6
-    - 7
-  - name: Debian
-    versions:
-    - jessie
+    - name: Debian
+      versions:
+        - wheezy
+        - jessie
+        - stretch
+    - name: EL
+      versions:
+        - 6
+        - 7
+    - name: Fedora
+      versions:
+        - 24
+        - 25
+        - 26
+    - name: Ubuntu
+      versions:
+        - artful
+        - zesty
+        - yakkety
+        - xenial
+        - vivid
+        - wily
+        - utopic
+        - trusty
+        - saucy
+        - raring
+        - quantal
+        - precise
   galaxy_tags:
   - ruby
   - rvm
