@@ -39,6 +39,10 @@
   register: rvm_stat_shell_profiles
   when: rvm_stat_shell_profiles is not defined
 
+- name: "Define result for comparrison"
+  set_fact:
+    expected_ruby: "* ruby-{{ ruby_version }}"
+
 - include: "cleanup.yml"
   when: clean_rvm_install|bool == true
 

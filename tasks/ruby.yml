@@ -20,7 +20,7 @@
 - name: "Ruby | Remove default alias"
   shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} alias create default {{ ruby_version }}"
   when: >
-    ('"* ruby-{{ ruby_version}}" not in post_execute_ruby_versions.stdout') or
+    ('"* ruby-" + ruby_version not in post_execute_ruby_versions.stdout') or
     ('"rvm alias create default <ruby>" in post_execute_ruby_versions')
   changed_when: false
 
@@ -29,7 +29,7 @@
   shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} alias create default {{ ruby_version }}"
   changed_when: false
   when:  >
-    ('"* ruby-{{ ruby_version}}" not in post_execute_ruby_versions.stdout') or
+    ('"* ruby-" + ruby_version not in post_execute_ruby_versions.stdout') or
     ('"rvm alias create default <ruby>" in post_execute_ruby_versions')
 
 - name: "Ruby | Switching version"
@@ -39,7 +39,7 @@
   register: switch_ver
   changed_when: '"Using {{ rvm_path}}/gems/ruby-{{ ruby_version }}" in switch_ver.stdout'
   failed_when: '"RVM is not a function" in switch_ver.stderr'
-  when:  '"=* ruby-{{ ruby_version}}" not in post_execute_ruby_versions.stdout'
+  when:  '"=* ruby-" + ruby_version not in post_execute_ruby_versions.stdout'
 
 - name: "Ruby | Import exports"
   lineinfile:
