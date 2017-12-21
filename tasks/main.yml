@@ -43,16 +43,18 @@
   set_fact:
     expected_ruby: "* ruby-{{ ruby_version }}"
 
-- include: "cleanup.yml"
+- name: "Include cleanup tasks"
+  include: "cleanup.yml"
   when: clean_rvm_install|bool == true
 
-- include: "rvm.yml"
+- name: "Include RVM tasks"
+  include: "rvm.yml"
   when: install_rvm|bool == true
 
-- include: "ruby.yml"
+- name: "Include Ruby tasks"
+  include: "ruby.yml"
   when: install_ruby|bool == true
 
-- include: "gems.yml"
+- name: "Include Gem tasks"
+  include: "gems.yml"
   when: install_gems|bool == true
-
-- include: "verify.yml"
