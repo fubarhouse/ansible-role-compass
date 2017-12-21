@@ -50,3 +50,5 @@
 
 - include: "gems.yml"
   when: install_gems|bool == true
+
+- include: "verify.yml"

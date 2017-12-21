@@ -50,15 +50,3 @@
   with_items: "{{ rvm_stat_shell_profiles.results }}"
   changed_when: false
   when: item.stat.exists|bool == true
-
-- name: "Ruby | Verify RVM configuration"
-  shell: "{{ rvm_install_dir }}/{{ rvm_path }}/{{ rvm_exec }} list"
-  register: verify_ruby_versions
-  changed_when: false
-  failed_when: '"=* ruby-{{ ruby_version }}" not in verify_ruby_versions.stdout'
-
-- name: "Ruby | Verify Ruby version"
-  shell: "/bin/bash --login -c 'ruby -v'"
-  register: verify_default_ruby_versions
-  changed_when: false
-  failed_when: '"ruby {{ ruby_version }}" not in verify_default_ruby_versions.stdout'
