@@ -31,66 +31,59 @@
     changed_when: false
     when: ansible_os_family == 'Debian'
     failed_when: false
-  - name: Install dependencies
+  - name: Install dependencies (Debian)
     package:
       name: "{{ item }}"
       state: latest
     with_items:
-    - sudo
-    - git
-    - git-svn
-    - gpg
-    - gnupg2
-    - rsync
-    - openssh-server
-    - openssh-client
-    - python
-    - python-dev
-    - unzip
-    - tar
-    - gtar
-    - gzip
-    - wget
-    - gettext-devel
-    - expat-devel
-    - curl-devel
-    - zlib-devel
-    - perl-devel
-    - openssl-devel
-    - subversion-perl
-    - make
-    - libcurl4-gnutls-dev
-    - libexpat1-dev
-    - gettext
-    - libssl-dev
-    - build-essential
-    - gcc
-    - ruby-full
-    - ruby
-    - libyaml-devel
-    - lib64yaml-devel
-    - libffi-devel
-    - procps
-    - bash
-    - curl
-    - patch
-    - javac
-    - java-1.7.0-openjdk-devel
-    - java-devel
-    - java
-    - gcc-c++
-    - glibc-devel
-    - patch
-    - readline
-    - readline-devel
-    - zlib
-    - zlib-devel
-    - libffi-devel
-    - bzip2
-    - automake
-    - libtool
-    - bison
-    - sqlite-devel
+      - sudo
+      - git
+      - git-svn
+      - gnupg2
+      - openssh-server
+      - python-dev
+      - unzip
+      - make
+      - libcurl4-gnutls-dev
+      - gettext
+      - build-essential
+      - ruby-full
+      - ruby
+      - curl
+      - automake
+      - libtool
+      - bison
+    failed_when: false
+  - name: Install dependencies (RedHat)
+    package:
+      name: "{{ item }}"
+      state: latest
+    with_items:
+      - sudo
+      - git
+      - git-svn
+      - gpg
+      - openssh-server
+      - python
+      - wget
+      - gettext-devel
+      - expat-devel
+      - curl-devel
+      - perl-devel
+      - openssl-devel
+      - ruby
+      - libyaml-devel
+      - lib64yaml-devel
+      - procps
+      - patch
+      - java-devel
+      - gcc-c++
+      - readline-devel
+      - bzip2
+      - automake
+      - libtool
+      - bison
+      - sqlite-devel
     failed_when: false
   - name: add travis
     user:
