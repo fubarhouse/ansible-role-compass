@@ -1,6 +1,7 @@
 ---
 
 - hosts: all
+
   vars:
     clean_rvm_install: false
     rvm_autolibs_mode: disable
@@ -12,11 +13,14 @@
     secure_rvm_install: false
     install_ruby: false
     install_gems: false
+
   pre_tasks:
+
   - file:
       path: /tmp
       state: directory
       mode: 0777
+
   - name: Update yum cache.
     yum:
       update_cache: yes
@@ -24,6 +28,7 @@
     changed_when: false
     when: ansible_os_family == 'RedHat'
     failed_when: false
+
   - name: Update apt cache.
     apt:
       update_cache: yes
@@ -31,6 +36,7 @@
     changed_when: false
     when: ansible_os_family == 'Debian'
     failed_when: false
+
   - name: Install dependencies (Debian)
     package:
       name: "{{ item }}"
@@ -54,6 +60,8 @@
       - libtool
       - bison
     failed_when: false
+    when: ansible_os_family == 'Debian'
+
   - name: Install dependencies (RedHat)
     package:
       name: "{{ item }}"
@@ -85,6 +93,8 @@
       - bison
       - sqlite-devel
     failed_when: false
+    when: ansible_os_family == 'RedHat'
+
   - name: add travis
     user:
       name: travis
